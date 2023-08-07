@@ -14,6 +14,9 @@ from pathlib import Path
 import environ
 import os
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env(
     DEBUG=(bool, False),
     DATABASE_NAME=(str, ''),
@@ -21,11 +24,8 @@ env = environ.Env(
     DATABASE_PASSWORD=(str, ''),
     DATABASE_HOST=(str, ''),
     DATABASE_PORT=(str, ''),
-
 )
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(
     env_file=os.path.join(BASE_DIR,'.env')
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'my_lecture.apps.MyLectureConfig'
 ]
 
 MIDDLEWARE = [
