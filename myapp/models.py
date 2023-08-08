@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import UniqueConstraint
 
+# Create your models here.
 class Lecture(models.Model):
     lecture_id = models.IntegerField(primary_key=True)
     lecture_curriculum = models.CharField(max_length=10)
@@ -22,8 +23,6 @@ class Lecture(models.Model):
 
     def __str__(self):
         return f"{self.lecture_code}-{self.lecture_number} - {self.lecture_name}"
-
-
 
 
 class LectureRoom(models.Model):
