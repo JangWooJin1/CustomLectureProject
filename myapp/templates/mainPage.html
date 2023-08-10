@@ -1,0 +1,57 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var get_classification_options_url = "{% url 'get_classification_options' %}";
+        var get_univ_options_url = "{% url 'get_univ_options' %}";
+        var get_major_options_url = "{% url 'get_major_options' %}";
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/dynamicSelect.js' %}"></script>
+</head>
+<body>
+    교과과정
+    <select id="mainSelect">
+        <option value="all">--전체--</option>
+        {% for curriculum in curriculum_list %}
+            <option value="{{ curriculum }}">{{ curriculum }}</option>
+        {% endfor %}
+    </select>
+
+    교과영역구분
+    <select id="subSelect">
+        <option value="all">--전체--</option>
+    </select>
+
+    캠퍼스
+    <select>
+        <option value="all">--전체--</option>
+        {% for campus in campus_list %}
+            <option value="{{ campus }}">{{ campus }}</option>
+        {% endfor %}
+    </select>
+
+    <br>
+
+    <div id="selectContainer">
+
+    </div>
+
+    <select>
+        {% for value, label in search_zip_list %}
+            <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+    <input type="text">
+    <button type="submit">조회</button>
+
+    <div class="itembox">
+
+
+    </div>
+
+</body>
+</body>
+</html>
