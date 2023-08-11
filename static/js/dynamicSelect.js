@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#mainSelect").change(function () {
+    $("#curriculumSelect").change(function () {
         var selectedValue = $(this).val();
 
         // AJAX 요청으로 선택에 맞는 옵션들을 가져옵니다.
@@ -7,13 +7,13 @@ $(document).ready(function () {
             url: get_classification_options_url,  // Django URL 설정에 따라 수정
             data: { selected_value: selectedValue },
             success: function (data) {
-                var subSelect = $("#subSelect");
-                subSelect.empty(); // 기존 옵션을 모두 지웁니다.
-                subSelect.append(new Option("--전체--", "all"));
+                var classificationSelect = $("#classificationSelect");
+                classificationSelect.empty(); // 기존 옵션을 모두 지웁니다.
+                classificationSelect.append(new Option("--전체--", "all"));
 
                 // 받아온 데이터를 기반으로 새로운 옵션을 추가합니다.
                 for (var i = 0; i < data.length; i++) {
-                    subSelect.append(new Option(data[i].label, data[i].value));
+                    classificationSelect.append(new Option(data[i].label, data[i].value));
                 }
             }
         });

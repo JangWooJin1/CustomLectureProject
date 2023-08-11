@@ -7,51 +7,58 @@
         var get_classification_options_url = "{% url 'get_classification_options' %}";
         var get_univ_options_url = "{% url 'get_univ_options' %}";
         var get_major_options_url = "{% url 'get_major_options' %}";
+        var get_lecture_url = "{% url 'get_lecture' %}";
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/dynamicSelect.js' %}"></script>
+    <script src="{% static 'js/getLecture.js' %}"></script>
 </head>
 <body>
-    교과과정
-    <select id="mainSelect">
-        <option value="all">--전체--</option>
-        {% for curriculum in curriculum_list %}
-            <option value="{{ curriculum }}">{{ curriculum }}</option>
-        {% endfor %}
-    </select>
+    <div>
+        <div>
+            교과과정
+            <select id="curriculumSelect">
+                <option value="all">--전체--</option>
+                {% for curriculum in curriculum_list %}
+                    <option value="{{ curriculum }}">{{ curriculum }}</option>
+                {% endfor %}
+            </select>
 
-    교과영역구분
-    <select id="subSelect">
-        <option value="all">--전체--</option>
-    </select>
+            교과영역구분
+            <select id="classificationSelect">
+                <option value="all">--전체--</option>
+            </select>
 
-    캠퍼스
-    <select>
-        <option value="all">--전체--</option>
-        {% for campus in campus_list %}
-            <option value="{{ campus }}">{{ campus }}</option>
-        {% endfor %}
-    </select>
+            캠퍼스
+            <select id="campusSelect">
+                <option value="all">--전체--</option>
+                {% for campus in campus_list %}
+                    <option value="{{ campus }}">{{ campus }}</option>
+                {% endfor %}
+            </select>
 
-    <br>
+        </div>
 
-    <div id="selectContainer">
+        <div id="selectContainer">
 
+        </div>
+
+        <div>
+            <select id="selectSearchConditions">
+                {% for value, label in search_zip_list %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <input id="searchText" type="text">
+            <button id="submitButton" type="button" >조회</button>
+        </div>
     </div>
 
-    <select>
-        {% for value, label in search_zip_list %}
-            <option value="{{ value }}">{{ label }}</option>
-        {% endfor %}
-    </select>
-    <input type="text">
-    <button type="submit">조회</button>
-
-    <div class="itembox">
-
-
+    <div class="lectureBox">
+        <table id="lectureTable" border="1">
+            <tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>
+        </table>
     </div>
 
-</body>
 </body>
 </html>

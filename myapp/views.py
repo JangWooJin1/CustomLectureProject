@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Lecture
 from django.views import View
+from django.core import serializers
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 class mainPage(View):
@@ -25,7 +27,6 @@ class mainPage(View):
     def post(self, request):
         pass
 
-
 def get_classification_options(request):
     selected_value = request.GET.get('selected_value')
     classification_list = Lecture.objects.filter(lecture_curriculum = selected_value).values_list('lecture_classification', flat=True).distinct()
@@ -33,13 +34,11 @@ def get_classification_options(request):
 
     return JsonResponse(options, safe=False)
 
-
 def get_univ_options(request):
     univ_list = Lecture.objects.filter(lecture_curriculum = "전공").values_list('lecture_univ', flat=True).distinct()
     options = [{"value" : univ, "label":univ} for univ in univ_list]
 
     return JsonResponse(options, safe=False)
-
 
 def get_major_options(request):
     selected_value = request.GET.get('selected_value')
@@ -47,3 +46,51 @@ def get_major_options(request):
     options = [{"value" : major, "label" : major} for major in major_list]
 
     return JsonResponse(options, safe=False)
+
+@csrf_exempt
+def get_lecture(request):
+    curriculum = request.POST.get('curriculum')
+    classification = request.POST.get('classification')
+    campus = request.POST.get('campus')
+    univ = request.POST.get('univ')
+    major = request.POST.get('major')
+    searchCondition = request.POST.get('searchCondition')
+    search = request.POST.get('search')
+
+    # 필터링 조건을 저장할 딕셔너리 생성
+    filter_kwargs = {}
+
+    # 검색값이 존재하면 해당 조건 추가
+    if searchCondition and search:
+        filter_kwargs[searchCondition + '__icontains'] = search
+
+    else:
+        # curriculum 값이 "all"이 아니면 curriculum 조건 추가
+        if curriculum != 'all':
+            filter_kwargs['lecture_curriculum'] = curriculum
+
+        # classification 값이 "all"이 아니면 classification 조건 추가
+        if classification != 'all':
+            filter_kwargs['lecture_classification'] = classification
+
+        # campus 값이 "all"이 아니면 campus 조건 추가
+        if campus != 'all':
+            filter_kwargs['lecture_campus'] = campus
+
+        # univ 값이 "all"이 아니면 univ 조건 추가
+        if univ != 'all':
+            filter_kwargs['lecture_univ'] = univ
+
+        # major 값이 "all"이 아니면 major 조건 추가
+        if major != 'all':
+            filter_kwargs['lecture_major'] = major
+
+
+    # 조건에 맞는 레코드를 가져옵니다.
+    lectures = Lecture.objects.filter(**filter_kwargs)
+
+
+    # Lecture 모델 인스턴스를 JSON 형식으로 변환
+    lectures_json = serializers.serialize("json", lectures)
+
+    return JsonResponse(lectures_json, safe=False)
