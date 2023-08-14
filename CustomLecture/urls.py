@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('mainPage/', mainPage.as_view(), name='mainPage'),
     path('mainPage/get_classification_options', get_classification_options, name='get_classification_options'),
-    path('mainPage/get_univ_options',get_univ_options, name='get_univ_options'),
+    path('mainPage/get_univ_options', get_univ_options, name='get_univ_options'),
     path('mainPage/get_major_options', get_major_options, name='get_major_options'),
     path('mainPage/get_lecture', get_lecture, name='get_lecture'),
     path('mainPage/add_userbasket', add_userbasket, name='add_userbasket'),
