@@ -10,9 +10,13 @@ $(document).on('click', '.add-button', function () {
         data: {
             lecture_code: lectureCode,
         },
-        success: function(data) {
+        success: function(lectures) {
+                console.log("Received data:", lectures);
+
                 // JSON 데이터를 JavaScript 객체로 파싱
-                var lectures = JSON.parse(data);
+                //var lectures = JSON.parse(data);
+
+                //lectures = data;
 
                 // 기존 테이블 내용을 지우기
                 $('#UserBasketTable').empty();
@@ -21,7 +25,7 @@ $(document).on('click', '.add-button', function () {
                 var tableRows = '<tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>';
 
                 for (var i = 0; i < lectures.length; i++) {
-                    var lecture = lectures[i].fields;
+                    var lecture = lectures[i];
                     tableRows += '<tr>';
                     tableRows += '<td>' + lecture.lecture_curriculum + '</td>';
                     tableRows += '<td>' + lecture.lecture_classification + '</td>';
@@ -29,7 +33,6 @@ $(document).on('click', '.add-button', function () {
                     tableRows += '<td>' + lecture.lecture_name + '</td>';
                     tableRows += '<td>' + lecture.lecture_professor + '</td>';
                     tableRows += '<td>' + lecture.lecture_credit + '</td>';
-                    tableRows += '<td><button class="add-button" data-lecture-code="' + lecture.lecture_code + '">추가</button></td>';
                     tableRows += '</tr>';
                 }
 

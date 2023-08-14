@@ -22,7 +22,7 @@ from myapp.views import MainPage, get_classification_options, get_univ_options, 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('MainPage/', MainPage.as_view(), name='MainPage'),
+    path('mainPage/', MainPage.as_view(), name='MainPage'),
     path('MainPage/get_classification_options', get_classification_options, name='get_classification_options'),
     path('MainPage/get_univ_options', get_univ_options, name='get_univ_options'),
     path('MainPage/get_major_options', get_major_options, name='get_major_options'),
