@@ -41,3 +41,24 @@ class LectureTime(models.Model):
 
     def __str__(self):
         return f"{self.lecture_id} - {self.lecture_day}"
+
+class User(models.Model):
+    user_id = models.CharField(max_length=20, primary_key=True)
+    user_pw = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.user_id
+
+class UserBasket(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    lecture_id = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['user_id', 'lecture_id'], name='unique_basket')
+        ]
+
+    def __str__(self):
+        return f'{self.user_id} - {self.lecture_id}'
+
+
