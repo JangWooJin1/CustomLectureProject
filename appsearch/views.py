@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 
+appName = "appsearch"
+
 def execute_raw_sql_query(query, params=None):
     with connection.cursor() as cursor:
         if params:
@@ -21,7 +23,7 @@ def execute_raw_sql_query(query, params=None):
             results.append(dict(zip(columns, row)))
         return results
 
-class MainPage(View):
+class Search(View):
     template_name = 'mainPage.html'
 
     def get(self, request):
@@ -47,9 +49,9 @@ class MainPage(View):
 def get_classification_options(request):
     selected_value = request.GET.get('selected_value')
 
-    read_query = """
+    read_query = f"""
     SELECT DISTINCT lecture_classification
-    FROM myapp_lecture
+    FROM {appName}_lecture
     WHERE lecture_curriculum=%s
     """
 
@@ -61,9 +63,9 @@ def get_classification_options(request):
 
 
 def get_univ_options(request):
-    read_query = """
+    read_query = f"""
     SELECT DISTINCT lecture_univ
-    FROM myapp_lecture
+    FROM {appName}_lecture
     WHERE lecture_curriculum="전공"
     """
 
@@ -75,9 +77,9 @@ def get_univ_options(request):
 def get_major_options(request):
     selected_value = request.GET.get('selected_value')
 
-    read_query ="""
+    read_query =f"""
     SELECT DISTINCT lecture_major
-    FROM myapp_lecture
+    FROM {appName}_lecture
     WHERE lecture_univ = %s
     """
 
@@ -97,7 +99,7 @@ def get_lecture(request):
     searchCondition = request.POST.get('searchCondition')
     search = request.POST.get('search')
 
-    read_query = "SELECT * FROM myapp_lecture WHERE 1=1"
+    read_query = f"SELECT * FROM {appName}_lecture WHERE 1=1"
 
     read_params = []
 
@@ -134,10 +136,10 @@ def add_userbasket(request):
     user_id = 'jang'
     lecture_code = request.POST.get('lecture_code')
 
-    insert_query = """
-    INSERT INTO myapp_userbasket (user_id_id, lecture_id_id)
+    insert_query = f"""
+    INSERT INTO {appName}_userbasket (user_id_id, lecture_id_id)
     SELECT %s, l.lecture_id
-    FROM myapp_lecture AS l
+    FROM {appName}_lecture AS l
     WHERE l.lecture_code = %s
     """
 
@@ -145,11 +147,11 @@ def add_userbasket(request):
 
     execute_raw_sql_query(insert_query,insert_params)
 
-    read_query = """
+    read_query = f"""
        SELECT * 
-       FROM myapp_userbasket
-       INNER JOIN myapp_lecture ON myapp_userbasket.lecture_id_id = myapp_lecture.lecture_id
-       WHERE myapp_userbasket.user_id_id = %s
+       FROM {appName}_userbasket
+       INNER JOIN {appName}_lecture ON {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
+       WHERE {appName}_userbasket.user_id_id = %s
        """
 
     read_params = [user_id]
@@ -162,11 +164,11 @@ def delete_userbasket(request):
     user_id = 'jang'
     lecture_code = request.POST.get('lecture_code')
 
-    delete_query = """
-    DELETE FROM myapp_userbasket
+    delete_query = f"""
+    DELETE FROM {appName}_userbasket
     WHERE user_id_id = %s AND lecture_id_id IN (
         SELECT l.lecture_id
-        FROM myapp_lecture AS l
+        FROM {appName}_lecture AS l
         WHERE l.lecture_code = %s
     )
     """
@@ -175,11 +177,11 @@ def delete_userbasket(request):
 
     execute_raw_sql_query(delete_query, delete_params)
 
-    read_query = """
+    read_query = f"""
        SELECT * 
-       FROM myapp_userbasket
-       INNER JOIN myapp_lecture ON myapp_userbasket.lecture_id_id = myapp_lecture.lecture_id
-       WHERE myapp_userbasket.user_id_id = %s
+       FROM {appName}_userbasket
+       INNER JOIN {appName}_lecture ON {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
+       WHERE {appName}_userbasket.user_id_id = %s
        """
 
     read_params = [user_id]

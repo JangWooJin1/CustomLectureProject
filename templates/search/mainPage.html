@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script>
-        var get_classification_options_url = "{% url 'get_classification_options' %}";
-        var get_univ_options_url = "{% url 'get_univ_options' %}";
-        var get_major_options_url = "{% url 'get_major_options' %}";
-        var get_lecture_url = "{% url 'get_lecture' %}";
-        var add_userbasket_url = "{% url 'add_userbasket' %}";
-        var delete_userbasket_url = "{% url 'delete_userbasket' %}";
+        var get_classification_options_url = "{% url 'search:get_classification_options' %}";
+        var get_univ_options_url = "{% url 'search:get_univ_options' %}";
+        var get_major_options_url = "{% url 'search:get_major_options' %}";
+        var get_lecture_url = "{% url 'search:get_lecture' %}";
+        var add_userbasket_url = "{% url 'search:add_userbasket' %}";
+        var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/dynamicSelect.js' %}"></script>
