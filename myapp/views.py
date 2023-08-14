@@ -4,6 +4,7 @@ from django.views import View
 from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count
 
 # Create your views here.
 class mainPage(View):
@@ -89,8 +90,28 @@ def get_lecture(request):
     # 조건에 맞는 레코드를 가져옵니다.
     lectures = Lecture.objects.filter(**filter_kwargs)
 
+    # lecture_code_list = lectures.values_list('lecture_code',  flat=True).distinct()
+    #
+    # lecture_group_list = []
+    # for lecture_code in lecture_code_list:
+    #     lecture_group = Lecture.objects.filter(**filter_kwargs, lecture_code=lecture_code)
+    #     lecture_group_json = serializers.serialize("json", lecture_group)
+    #
+    #     lecture_group_list.append(lecture_group_json)
+    #     lecture_group_list.append(lecture_group)
 
     # Lecture 모델 인스턴스를 JSON 형식으로 변환
     lectures_json = serializers.serialize("json", lectures)
-
     return JsonResponse(lectures_json, safe=False)
+    #return JsonResponse(lecture_group_list, safe=False)
+
+@csrf_exempt
+def add_userbasket(request):
+    user_id = 'jang'
+    lecture_code = request.POST.get('lecture_code')
+
+    lectures_json = []
+    return JsonResponse(lectures_json, safe=False)
+
+
+

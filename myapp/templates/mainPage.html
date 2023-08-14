@@ -8,10 +8,12 @@
         var get_univ_options_url = "{% url 'get_univ_options' %}";
         var get_major_options_url = "{% url 'get_major_options' %}";
         var get_lecture_url = "{% url 'get_lecture' %}";
+        var add_userbasket_url = "{% url 'add_userbasket' %}";
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/dynamicSelect.js' %}"></script>
     <script src="{% static 'js/getLecture.js' %}"></script>
+    <script src="{% static 'js/addBasket.js' %}"></script>
 </head>
 <body>
     <div>
@@ -55,9 +57,27 @@
     </div>
 
     <div class="lectureBox">
-        <table id="lectureTable" border="1">
-            <tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>
-        </table>
+        <div>
+            <table id="lectureTableHead" border="1">
+                <tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>
+            </table>
+        </div>
+        <div id="lectureTable">
+
+        </div>
+
+    </div>
+
+    <div class="basketBox">
+        <div>
+            <table id="UserBasketTableHead" border="1">
+                <tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>
+            </table>
+        </div>
+        <div id="UserBasketTable">
+
+        </div>
+
     </div>
 
 </body>
