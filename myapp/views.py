@@ -11,6 +11,7 @@ from django.db.models import Count
 class Login(View):
     pass
 
+
 class MainPage(View):
     template_name = 'mainPage.html'
 
@@ -23,34 +24,39 @@ class MainPage(View):
         search_zip_list = zip(search_value_list, search_label_list)
 
         context = {
-            'curriculum_list' : curriculum_list,
-            'campus_list' : campus_list,
-            'search_zip_list' : search_zip_list,
+            'curriculum_list': curriculum_list,
+            'campus_list': campus_list,
+            'search_zip_list': search_zip_list,
         }
         return render(request, self.template_name, context)
 
     def post(self, request):
         pass
 
+
 def get_classification_options(request):
     selected_value = request.GET.get('selected_value')
-    classification_list = Lecture.objects.filter(lecture_curriculum = selected_value).values_list('lecture_classification', flat=True).distinct()
-    options = [{"value" : classification, "label" : classification} for classification in classification_list]
+    classification_list = Lecture.objects.filter(lecture_curriculum=selected_value).values_list(
+        'lecture_classification', flat=True).distinct()
+    options = [{"value": classification, "label": classification} for classification in classification_list]
 
     return JsonResponse(options, safe=False)
+
 
 def get_univ_options(request):
-    univ_list = Lecture.objects.filter(lecture_curriculum = "전공").values_list('lecture_univ', flat=True).distinct()
-    options = [{"value" : univ, "label":univ} for univ in univ_list]
+    univ_list = Lecture.objects.filter(lecture_curriculum="전공").values_list('lecture_univ', flat=True).distinct()
+    options = [{"value": univ, "label": univ} for univ in univ_list]
 
     return JsonResponse(options, safe=False)
+
 
 def get_major_options(request):
     selected_value = request.GET.get('selected_value')
-    major_list = Lecture.objects.filter(lecture_univ = selected_value).values_list('lecture_major', flat=True).distinct()
-    options = [{"value" : major, "label" : major} for major in major_list]
+    major_list = Lecture.objects.filter(lecture_univ=selected_value).values_list('lecture_major', flat=True).distinct()
+    options = [{"value": major, "label": major} for major in major_list]
 
     return JsonResponse(options, safe=False)
+
 
 @csrf_exempt
 def get_lecture(request):
@@ -90,7 +96,6 @@ def get_lecture(request):
         if major != 'all':
             filter_kwargs['lecture_major'] = major
 
-
     # 조건에 맞는 레코드를 가져옵니다.
     lectures = Lecture.objects.filter(**filter_kwargs)
 
@@ -107,7 +112,8 @@ def get_lecture(request):
     # Lecture 모델 인스턴스를 JSON 형식으로 변환
     lectures_json = serializers.serialize("json", lectures)
     return JsonResponse(lectures_json, safe=False)
-    #return JsonResponse(lecture_group_list, safe=False)
+    # return JsonResponse(lecture_group_list, safe=False)
+
 
 @csrf_exempt
 def add_userbasket(request):
@@ -116,6 +122,3 @@ def add_userbasket(request):
 
     lectures_json = []
     return JsonResponse(lectures_json, safe=False)
-
-
-

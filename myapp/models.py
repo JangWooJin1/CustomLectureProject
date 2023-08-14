@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-
 # Create your models here.
+
+
 class Lecture(models.Model):
     lecture_id = models.IntegerField(primary_key=True)
     lecture_curriculum = models.CharField(max_length=10)
@@ -42,12 +43,14 @@ class LectureTime(models.Model):
     def __str__(self):
         return f"{self.lecture_id} - {self.lecture_day}"
 
+
 class User(models.Model):
     user_id = models.CharField(max_length=20, primary_key=True)
     user_pw = models.CharField(max_length=20)
 
     def __str__(self):
         return self.user_id
+
 
 class UserBasket(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
