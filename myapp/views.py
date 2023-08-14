@@ -5,7 +5,19 @@ from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
+from django.db import connection
 
+def execute_raw_sql_query(query, params=None):
+    with connection.cursor() as cursor:
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        results = []
+        for row in cursor.fetchall():
+            results.append(dict(zip(columns, row)))
+        return results
 
 # Create your views here.
 class Login(View):
