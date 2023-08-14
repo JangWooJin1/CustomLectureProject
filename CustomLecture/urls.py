@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myapp.views import mainPage, get_classification_options, get_univ_options, get_major_options, get_lecture, add_userbasket
+from myapp.views import MainPage, get_classification_options, get_univ_options, get_major_options, get_lecture, add_userbasket
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('mainPage/', mainPage.as_view(), name='mainPage'),
-    path('mainPage/get_classification_options', get_classification_options, name='get_classification_options'),
-    path('mainPage/get_univ_options', get_univ_options, name='get_univ_options'),
-    path('mainPage/get_major_options', get_major_options, name='get_major_options'),
-    path('mainPage/get_lecture', get_lecture, name='get_lecture'),
-    path('mainPage/add_userbasket', add_userbasket, name='add_userbasket'),
+    path('MainPage/', MainPage.as_view(), name='MainPage'),
+    path('MainPage/get_classification_options', get_classification_options, name='get_classification_options'),
+    path('MainPage/get_univ_options', get_univ_options, name='get_univ_options'),
+    path('MainPage/get_major_options', get_major_options, name='get_major_options'),
+    path('MainPage/get_lecture', get_lecture, name='get_lecture'),
+    path('MainPage/add_userbasket', add_userbasket, name='add_userbasket'),
 ]
