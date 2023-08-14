@@ -7,7 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Count
 
 # Create your views here.
-
+class Login(View):
+    pass
 
 class MainPage(View):
     template_name = 'mainPage.html'
