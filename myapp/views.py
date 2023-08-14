@@ -99,51 +99,37 @@ def get_lecture(request):
     searchCondition = request.POST.get('searchCondition')
     search = request.POST.get('search')
 
-    # 필터링 조건을 저장할 딕셔너리 생성
-    filter_kwargs = {}
+    read_query = "SELECT * FROM myapp_lecture WHERE 1=1"
 
-    # 검색값이 존재하면 해당 조건 추가
+    read_params = []
+
     if searchCondition and search:
-        filter_kwargs[searchCondition + '__icontains'] = search
-
+        read_query += f" AND {searchCondition} LIKE %s"
+        read_params.append(f'%{search}%')
     else:
-        # curriculum 값이 "all"이 아니면 curriculum 조건 추가
         if curriculum != 'all':
-            filter_kwargs['lecture_curriculum'] = curriculum
+            read_query += " AND lecture_curriculum = %s"
+            read_params.append(curriculum)
 
-        # classification 값이 "all"이 아니면 classification 조건 추가
         if classification != 'all':
-            filter_kwargs['lecture_classification'] = classification
+            read_query += " AND lecture_classification = %s"
+            read_params.append(classification)
 
-        # campus 값이 "all"이 아니면 campus 조건 추가
         if campus != 'all':
-            filter_kwargs['lecture_campus'] = campus
+            read_query += " AND lecture_campus = %s"
+            read_params.append(campus)
 
-        # univ 값이 "all"이 아니면 univ 조건 추가
-        if univ != 'all':
-            filter_kwargs['lecture_univ'] = univ
+        if (univ is not None) and univ != 'all' :
+            read_query += " AND lecture_univ = %s"
+            read_params.append(univ)
 
-        # major 값이 "all"이 아니면 major 조건 추가
-        if major != 'all':
-            filter_kwargs['lecture_major'] = major
+        if (major is not None) and major != 'all':
+            read_query += " AND lecture_major = %s"
+            read_params.append(major)
 
-    # 조건에 맞는 레코드를 가져옵니다.
-    lectures = Lecture.objects.filter(**filter_kwargs)
+    lectures_json = execute_raw_sql_query(read_query, read_params)
 
-    # lecture_code_list = lectures.values_list('lecture_code',  flat=True).distinct()
-    #
-    # lecture_group_list = []
-    # for lecture_code in lecture_code_list:
-    #     lecture_group = Lecture.objects.filter(**filter_kwargs, lecture_code=lecture_code)
-    #     lecture_group_json = serializers.serialize("json", lecture_group)
-    #
-    #     lecture_group_list.append(lecture_group_json)
-    #     lecture_group_list.append(lecture_group)
-
-    # Lecture 모델 인스턴스를 JSON 형식으로 변환
-    lectures_json = serializers.serialize("json", lectures)
     return JsonResponse(lectures_json, safe=False)
-    # return JsonResponse(lecture_group_list, safe=False)
 
 @csrf_exempt
 def add_userbasket(request):
