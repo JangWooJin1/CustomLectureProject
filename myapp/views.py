@@ -13,6 +13,10 @@ def execute_raw_sql_query(query, params=None):
             cursor.execute(query, params)
         else:
             cursor.execute(query)
+
+        if cursor.description is None:
+            return None
+
         columns = [col[0] for col in cursor.description]
         results = []
         for row in cursor.fetchall():
@@ -126,7 +130,28 @@ def add_userbasket(request):
     user_id = 'jang'
     lecture_code = request.POST.get('lecture_code')
 
-    lectures_json = []
+    insert_query = """
+    INSERT INTO myapp_userbasket (user_id_id, lecture_id_id)
+    SELECT %s, l.lecture_id
+    FROM myapp_lecture AS l
+    WHERE l.lecture_code = %s
+    """
+
+    insert_params = [user_id, lecture_code]
+
+    execute_raw_sql_query(insert_query,insert_params)
+
+    read_query = """
+       SELECT * 
+       FROM myapp_userbasket
+       INNER JOIN myapp_lecture ON myapp_userbasket.lecture_id_id = myapp_lecture.lecture_id
+       WHERE myapp_userbasket.user_id_id = %s
+       """
+
+    read_params = [user_id]
+
+    lectures_json = execute_raw_sql_query(read_query, read_params)
+
     return JsonResponse(lectures_json, safe=False)
 
 
