@@ -1,11 +1,11 @@
 // '추가' 버튼 클릭 이벤트 핸들러
-$(document).on('click', '.add-button', function () {
+$(document).on('click', '.delete-button', function () {
     // 해당 버튼의 data-lecture-code 속성을 가져옴
     var lectureCode = $(this).data('lecture-code');
 
     // lectureCode를 사용하여 Ajax 요청 보내기 (예시)
     $.ajax({
-        url: add_userbasket_url, // 적절한 URL로 변경해야 함
+        url: delete_userbasket_url, // 적절한 URL로 변경해야 함
         type: 'POST',
         data: {
             lecture_code: lectureCode,
@@ -37,7 +37,7 @@ $(document).on('click', '.add-button', function () {
         },
         error: function(error) {
             // Ajax 요청 실패 시 처리
-            console.error('강의 추가 요청 실패', error);
+            console.error('강의 제거 요청 실패', error);
             // 실패한 경우 사용자에게 알림 등을 표시하는 등의 작업 수행
         }
     });

@@ -173,3 +173,34 @@ def add_userbasket(request):
     lectures_json = execute_raw_sql_query(read_query, read_params)
 
     return JsonResponse(lectures_json, safe=False)
+@csrf_exempt
+def delete_userbasket(request):
+    user_id = 'jang'
+    lecture_code = request.POST.get('lecture_code')
+
+    delete_query = """
+    DELETE FROM myapp_userbasket
+    WHERE user_id_id = %s AND lecture_id_id IN (
+        SELECT l.lecture_id
+        FROM myapp_lecture AS l
+        WHERE l.lecture_code = %s
+    )
+    """
+
+    delete_params = [user_id, lecture_code]
+
+    execute_raw_sql_query(delete_query, delete_params)
+
+    read_query = """
+       SELECT * 
+       FROM myapp_userbasket
+       INNER JOIN myapp_lecture ON myapp_userbasket.lecture_id_id = myapp_lecture.lecture_id
+       WHERE myapp_userbasket.user_id_id = %s
+       """
+
+    read_params = [user_id]
+
+    lectures_json = execute_raw_sql_query(read_query, read_params)
+
+    return JsonResponse(lectures_json, safe=False)
+
