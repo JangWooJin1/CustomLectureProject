@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from .models import Lecture
 from django.views import View
-from django.core import serializers
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Count
 from django.db import connection
 
 def execute_raw_sql_query(query, params=None):
