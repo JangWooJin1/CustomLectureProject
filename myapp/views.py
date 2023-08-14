@@ -23,16 +23,12 @@ def execute_raw_sql_query(query, params=None):
             results.append(dict(zip(columns, row)))
         return results
 
-# Create your views here.
-class Login(View):
-    pass
-
-
 class MainPage(View):
     template_name = 'mainPage.html'
 
     def get(self, request):
         curriculum_list = Lecture.objects.values_list('lecture_curriculum', flat=True).distinct()
+
         campus_list = Lecture.objects.values_list('lecture_campus', flat=True).distinct()
 
         search_label_list = ["교과목", "학수번호", "교원명"]
@@ -52,27 +48,46 @@ class MainPage(View):
 
 def get_classification_options(request):
     selected_value = request.GET.get('selected_value')
-    classification_list = Lecture.objects.filter(lecture_curriculum=selected_value).values_list(
-        'lecture_classification', flat=True).distinct()
-    options = [{"value": classification, "label": classification} for classification in classification_list]
 
-    return JsonResponse(options, safe=False)
+    read_query = """
+    SELECT DISTINCT lecture_classification
+    FROM myapp_lecture
+    WHERE lecture_curriculum=%s
+    """
+
+    read_params = [selected_value]
+
+    classification_list = execute_raw_sql_query(read_query, read_params)
+
+    return JsonResponse(classification_list, safe=False)
 
 
 def get_univ_options(request):
-    univ_list = Lecture.objects.filter(lecture_curriculum="전공").values_list('lecture_univ', flat=True).distinct()
-    options = [{"value": univ, "label": univ} for univ in univ_list]
+    read_query = """
+    SELECT DISTINCT lecture_univ
+    FROM myapp_lecture
+    WHERE lecture_curriculum="전공"
+    """
 
-    return JsonResponse(options, safe=False)
+    univ_list = execute_raw_sql_query(read_query)
+
+    return JsonResponse(univ_list, safe=False)
 
 
 def get_major_options(request):
     selected_value = request.GET.get('selected_value')
-    major_list = Lecture.objects.filter(lecture_univ=selected_value).values_list('lecture_major', flat=True).distinct()
-    options = [{"value": major, "label": major} for major in major_list]
 
-    return JsonResponse(options, safe=False)
+    read_query ="""
+    SELECT DISTINCT lecture_major
+    FROM myapp_lecture
+    WHERE lecture_univ = %s
+    """
 
+    read_params = [selected_value]
+
+    major_list = execute_raw_sql_query(read_query, read_params)
+
+    return JsonResponse(major_list, safe=False)
 
 @csrf_exempt
 def get_lecture(request):
@@ -129,7 +144,6 @@ def get_lecture(request):
     lectures_json = serializers.serialize("json", lectures)
     return JsonResponse(lectures_json, safe=False)
     # return JsonResponse(lecture_group_list, safe=False)
-
 
 @csrf_exempt
 def add_userbasket(request):

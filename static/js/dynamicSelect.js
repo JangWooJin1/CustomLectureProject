@@ -7,13 +7,14 @@ $(document).ready(function () {
             url: get_classification_options_url,  // Django URL 설정에 따라 수정
             data: { selected_value: selectedValue },
             success: function (data) {
+            console.log(data)
                 var classificationSelect = $("#classificationSelect");
                 classificationSelect.empty(); // 기존 옵션을 모두 지웁니다.
                 classificationSelect.append(new Option("--전체--", "all"));
 
                 // 받아온 데이터를 기반으로 새로운 옵션을 추가합니다.
                 for (var i = 0; i < data.length; i++) {
-                    classificationSelect.append(new Option(data[i].label, data[i].value));
+                    classificationSelect.append(new Option(data[i].lecture_classification, data[i].lecture_classification));
                 }
             }
         });
@@ -28,7 +29,7 @@ $(document).ready(function () {
                     univSelect.append(new Option("--선택--", "all"));
                     // 받아온 데이터를 기반으로 새로운 옵션을 추가
                     for (var i = 0; i < data.length; i++) {
-                        univSelect.append(new Option(data[i].label, data[i].value));
+                        univSelect.append(new Option(data[i].lecture_univ, data[i].lecture_univ));
                     }
 
                     // 생성한 <select> 태그를 원하는 위치에 추가
@@ -59,7 +60,7 @@ $(document).ready(function () {
 
                 // 받아온 데이터를 기반으로 새로운 옵션을 추가합니다.
                 for (var i = 0; i < data.length; i++) {
-                    majorSelect.append(new Option(data[i].label, data[i].value));
+                    majorSelect.append(new Option(data[i].lecture_major, data[i].lecture_major));
                 }
             }
         });
