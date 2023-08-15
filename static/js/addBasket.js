@@ -37,6 +37,8 @@ $(document).on('click', '.add-button', function () {
                         tableRows += '<td>' + lecture.lecture_professor + '</td> ';
                         tableRows += '<td>' + lecture.combined_lecture_times + '</td> ';
                         tableRows += '<td>' + lecture.combined_lecture_rooms + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_campus + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_remark + '</td> ';
                         tableRows += '<td><button class="delete-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">제거</button></td>';
                         tableRows += '<br>';
                     }

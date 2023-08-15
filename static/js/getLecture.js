@@ -50,6 +50,8 @@ $(document).ready(function () {
                         tableRows += '<td>' + lecture.lecture_professor + '</td> ';
                         tableRows += '<td>' + lecture.combined_lecture_times + '</td> ';
                         tableRows += '<td>' + lecture.combined_lecture_rooms + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_campus + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_remark + '</td> ';
                         tableRows += '<td><button class="add-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">추가</button></td>';
                         tableRows += '<br>';
                     }
