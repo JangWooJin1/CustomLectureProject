@@ -24,24 +24,37 @@ $(document).ready(function () {
                 searchCondition : selectedSearchCondition,
                 search: searchText
             },
-            success: function (lectures) {
+            success: function (groups) {
                 // 기존 테이블 내용을 지우기
                 $('#lectureTable').empty();
 
-                // 테이블 행을 생성하고 데이터를 추가
-                var tableRows = '<tr><th>교과과정</th><th>교과영역구분</th><th>학수강좌번호</th><th>강의 이름</th><th>담당 교수</th><th>학점</th></tr>';
 
-                for (var i = 0; i < lectures.length; i++) {
-                    var lecture = lectures[i];
-                    tableRows += '<tr>';
-                    tableRows += '<td>' + lecture.lecture_curriculum + '</td>';
-                    tableRows += '<td>' + lecture.lecture_classification + '</td>';
-                    tableRows += '<td>' + lecture.lecture_code + '_' + lecture.lecture_number + '</td>';
-                    tableRows += '<td>' + lecture.lecture_name + '</td>';
-                    tableRows += '<td>' + lecture.lecture_professor + '</td>';
-                    tableRows += '<td>' + lecture.lecture_credit + '</td>';
-                    tableRows += '<td><button class="add-button" data-lecture-code="' + lecture.lecture_code + '">추가</button></td>';
-                    tableRows += '</tr>';
+                // 테이블 행을 생성하고 데이터를 추가
+                var tableRows = '';
+                for(var j=0; j<groups.length; j++){
+                    console.log(groups)
+                    tableRows += '<details>'
+                    tableRows += '<summary>'
+                    tableRows += '<td>' + groups[j][0].lecture_curriculum + '</td> ';
+                    tableRows += '<td>' + groups[j][0].lecture_classification + '</td> ';
+                    tableRows += '<td>' + groups[j][0].lecture_code + '</td> ';
+                    tableRows += '<td>' + groups[j][0].lecture_name + '</td> ';
+                    tableRows += '<td>' + groups[j][0].lecture_credit + '</td> ';
+                    tableRows += '<td><button class="add-button" data-lecture-code="' + groups[j][0].lecture_code + '">전체추가</button></td>';
+                    tableRows += '</summary>'
+                    var lectures = groups[j];
+
+                    for (var i = 0; i < lectures.length; i++) {
+                        var lecture = lectures[i];
+                        tableRows += '<td>' + lecture.lecture_number + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_professor + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_day + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_start_time + '</td> ';
+                        tableRows += '<td>' + lecture.lecture_end_time + '</td> ';
+                        tableRows += '<td><button class="add-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">추가</button></td>';
+                        tableRows += '<br>';
+                    }
+                    tableRows += '</details>'
                 }
 
                 // 생성한 행을 테이블에 추가
