@@ -134,17 +134,48 @@ def get_lecture(request):
     lecture_codes = execute_raw_sql_query(read_codes_query, read_params)
 
     read_group_query = f"""
-    SELECT *
-    FROM {appName}_lecture
-    INNER JOIN {appName}_lecturetime on {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id 
+    SELECT
+        lecture_id,
+        lecture_curriculum,
+        lecture_classification,
+        lecture_code,
+        lecture_number,
+        lecture_name,
+        lecture_professor,
+        lecture_campus,
+        lecture_credit,
+        lecture_univ,
+        lecture_major,
+        lecture_remark,
+        GROUP_CONCAT(
+            DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+            ORDER BY lecture_day
+            SEPARATOR ', '
+        ) AS combined_lecture_times,
+        GROUP_CONCAT(
+            DISTINCT lecture_room
+            ORDER BY lecture_room 
+            SEPARATOR ', '
+        ) AS combined_lecture_rooms
+    FROM
+        {appName}_lecture
+    INNER JOIN 
+        {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
+    INNER JOIN 
+        {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
+
     """
 
     where_query += " AND lecture_code = %s"
+    group_by_query = """
+    GROUP BY
+        lecture_id
+    """
     read_params.append("")
     lecture_groups = []
     for lecture_code in lecture_codes:
         read_params[-1] = lecture_code['lecture_code']
-        lecture_groups.append(execute_raw_sql_query(read_group_query + where_query, read_params))
+        lecture_groups.append(execute_raw_sql_query(read_group_query + where_query + group_by_query, read_params))
 
 
     return JsonResponse(lecture_groups, safe=False)
@@ -183,11 +214,42 @@ def add_userbasket(request):
 
     lecture_groups = []
     read_group_query = f"""
-    SELECT *
-    FROM {appName}_userbasket
-    INNER JOIN {appName}_lecture ON {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
-    WHERE {appName}_userbasket.user_id_id = %s AND lecture_code = %s
-    """
+     SELECT
+         lecture_id,
+         lecture_curriculum,
+         lecture_classification,
+         lecture_code,
+         lecture_number,
+         lecture_name,
+         lecture_professor,
+         lecture_campus,
+         lecture_credit,
+         lecture_univ,
+         lecture_major,
+         lecture_remark,
+         GROUP_CONCAT(
+             DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+             ORDER BY lecture_day
+             SEPARATOR ', '
+         ) AS combined_lecture_times,
+         GROUP_CONCAT(
+             DISTINCT lecture_room
+             ORDER BY lecture_room 
+             SEPARATOR ', '
+         ) AS combined_lecture_rooms
+     FROM
+         {appName}_lecture
+     INNER JOIN 
+         {appName}_userbasket ON {appName}_lecture.lecture_id = {appName}_userbasket.lecture_id_id
+     INNER JOIN 
+         {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
+     INNER JOIN 
+         {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
+     WHERE 
+         {appName}_userbasket.user_id_id = %s AND lecture_code = %s
+     GROUP BY
+         lecture_id
+     """
     read_params.append('')
 
     for lecture_code in lecture_codes:
@@ -229,12 +291,45 @@ def delete_userbasket(request):
     lecture_codes = execute_raw_sql_query(read_codes_query, read_params)
 
     lecture_groups = []
+
     read_group_query = f"""
-    SELECT *
-    FROM {appName}_userbasket
-    INNER JOIN {appName}_lecture ON {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
-    WHERE {appName}_userbasket.user_id_id = %s AND lecture_code = %s
-    """
+     SELECT
+         lecture_id,
+         lecture_curriculum,
+         lecture_classification,
+         lecture_code,
+         lecture_number,
+         lecture_name,
+         lecture_professor,
+         lecture_campus,
+         lecture_credit,
+         lecture_univ,
+         lecture_major,
+         lecture_remark,
+         GROUP_CONCAT(
+             DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+             ORDER BY lecture_day
+             SEPARATOR ', '
+         ) AS combined_lecture_times,
+         GROUP_CONCAT(
+             DISTINCT lecture_room
+             ORDER BY lecture_room 
+             SEPARATOR ', '
+         ) AS combined_lecture_rooms
+     FROM
+         {appName}_lecture
+     INNER JOIN 
+         {appName}_userbasket ON {appName}_lecture.lecture_id = {appName}_userbasket.lecture_id_id
+     INNER JOIN 
+         {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
+     INNER JOIN 
+         {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
+     WHERE 
+         {appName}_userbasket.user_id_id = %s AND lecture_code = %s
+     GROUP BY
+         lecture_id
+     """
+
     read_params.append('')
 
     for lecture_code in lecture_codes:

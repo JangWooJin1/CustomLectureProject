@@ -35,9 +35,8 @@ $(document).on('click', '.delete-button', function () {
                         var lecture = lectures[i];
                         tableRows += '<td>' + lecture.lecture_number + '</td> ';
                         tableRows += '<td>' + lecture.lecture_professor + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_day + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_start_time + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_end_time + '</td> ';
+                        tableRows += '<td>' + lecture.combined_lecture_times + '</td> ';
+                        tableRows += '<td>' + lecture.combined_lecture_rooms + '</td> ';
                         tableRows += '<td><button class="delete-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">제거</button></td>';
                         tableRows += '<br>';
                     }
