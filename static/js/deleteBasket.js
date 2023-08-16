@@ -1,5 +1,5 @@
 // '추가' 버튼 클릭 이벤트 핸들러
-$(document).on('click', '.delete-button', function () {
+$('.basketBox').on('click', '.delete-button', function () {
     // 해당 버튼의 data-lecture-code 속성을 가져옴
     var lectureCode = $(this).data('lecture-code');
     var lectureNumber = $(this).data('lecture-number');

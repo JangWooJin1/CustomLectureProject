@@ -52,7 +52,7 @@ select {
 }
 
 .lectureBox, .basketBox {
-    height: 400px;
+    height: 300px;
     overflow-y: auto; /* 세로 스크롤 생성 */
     border: 1px solid #ccc; /* 보더 추가 (선택 사항) */
     margin-top: 10px;
