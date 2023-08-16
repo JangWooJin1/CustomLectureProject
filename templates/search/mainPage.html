@@ -1,4 +1,3 @@
-{% extends "base.html" %}
 {% load static %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}">
@@ -40,30 +39,44 @@
         </div>
     </div>
 
-    <hr>
     <div class="lectureBox">
-        <table id="lectureTable">
-
-        </table>
+        <div class="table" id="lectureTable">
+            <div class="table-row">
+                <div>교과과정</div>
+                <div>교과영역구분</div>
+                <div>학수번호</div>
+                <div>과목명</div>
+                <div>학점</div>
+                <div>그룹추가</div>
+            </div>
+        </div>
 
     </div>
-    <hr>
     <div class="basketBox">
-        <table id="UserBasketTable">
-
-        </table>
+        <div class="table" id="UserBasketTable">
+            <div class="table-row">
+                <div>교과과정</div>
+                <div>교과영역구분</div>
+                <div>학수번호</div>
+                <div>과목명</div>
+                <div>학점</div>
+                <div>그룹제거</div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
     var get_classification_options_url = "{% url 'search:get_classification_options' %}";
     var get_univ_options_url = "{% url 'search:get_univ_options' %}";
     var get_major_options_url = "{% url 'search:get_major_options' %}";
+    var get_lecture_group_url = "{% url 'search:get_lecture_group' %}";
     var get_lecture_url = "{% url 'search:get_lecture' %}";
     var add_userbasket_url = "{% url 'search:add_userbasket' %}";
     var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/dynamicSelect.js' %}"></script>
+<script src="{% static 'js/getLectureGroup.js' %}"></script>
 <script src="{% static 'js/getLecture.js' %}"></script>
 <script src="{% static 'js/addBasket.js' %}"></script>
 <script src="{% static 'js/deleteBasket.js' %}"></script>
