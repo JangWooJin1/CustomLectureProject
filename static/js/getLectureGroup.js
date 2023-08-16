@@ -41,7 +41,7 @@ $(document).ready(function () {
 
                 for (var i = 0; i < groups.length; i++) {
                     tableRows += `
-                        <div class="table-row lecture_group" data-isFolded="true" data-lecture-code="${groups[i].lecture_code}">
+                        <div class="table-row lecture_group" data-lecture-code="${groups[i].lecture_code}" data-is-folded="true">
                             <div>${groups[i].lecture_curriculum}</div>
                             <div>${groups[i].lecture_classification}</div>
                             <div>${groups[i].lecture_code}</div>
