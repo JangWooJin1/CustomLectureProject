@@ -91,61 +91,14 @@ def get_major_options(request):
 
 @csrf_exempt
 def get_lecture(request):
-    curriculum = request.POST.get('curriculum')
-    classification = request.POST.get('classification')
-    campus = request.POST.get('campus')
-    univ = request.POST.get('univ')
-    major = request.POST.get('major')
-    searchCondition = request.POST.get('searchCondition')
-    search = request.POST.get('search')
+    code = request.POST.get('lecture_code')
 
-    read_codes_query = f"""
-    SELECT DISTINCT lecture_code 
-    FROM {appName}_lecture 
-    """
-    where_query = "WHERE 1=1"
-    read_params = []
-
-    if searchCondition and search:
-        where_query += f" AND {searchCondition} LIKE %s"
-        read_params.append(f'%{search}%')
-    else:
-        if curriculum != 'all':
-            where_query += " AND lecture_curriculum = %s"
-            read_params.append(curriculum)
-
-        if classification != 'all':
-            where_query += " AND lecture_classification = %s"
-            read_params.append(classification)
-
-        if campus != 'all':
-            where_query += " AND lecture_campus = %s"
-            read_params.append(campus)
-
-        if (univ is not None) and univ != 'all' :
-            where_query += " AND lecture_univ = %s"
-            read_params.append(univ)
-
-        if (major is not None) and major != 'all':
-            where_query += " AND lecture_major = %s"
-            read_params.append(major)
-
-    read_codes_query += where_query
-    lecture_codes = execute_raw_sql_query(read_codes_query, read_params)
-
-    read_group_query = f"""
+    read_query = f"""
     SELECT
-        lecture_id,
-        lecture_curriculum,
-        lecture_classification,
         lecture_code,
         lecture_number,
-        lecture_name,
         lecture_professor,
         lecture_campus,
-        lecture_credit,
-        lecture_univ,
-        lecture_major,
         lecture_remark,
         GROUP_CONCAT(
             DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
@@ -163,22 +116,66 @@ def get_lecture(request):
         {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
     INNER JOIN 
         {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
-
+    WHERE lecture_code = %s
+    GROUP BY lecture_id
     """
 
-    where_query += " AND lecture_code = %s"
-    group_by_query = """
-    GROUP BY
-        lecture_id
+    read_params = [code]
+
+    lectures = execute_raw_sql_query(read_query, read_params)
+
+    return JsonResponse(lectures, safe=False)
+
+@csrf_exempt
+def get_lecture_group(request):
+    curriculum = request.POST.get('curriculum')
+    classification = request.POST.get('classification')
+    campus = request.POST.get('campus')
+    univ = request.POST.get('univ')
+    major = request.POST.get('major')
+    searchCondition = request.POST.get('searchCondition')
+    search = request.POST.get('search')
+
+    read_query = f"""
+    SELECT DISTINCT
+        lecture_curriculum,
+        lecture_classification,
+        lecture_code,
+        lecture_name,
+        lecture_credit
+    FROM {appName}_lecture 
+    WHERE 1=1
     """
-    read_params.append("")
-    lecture_groups = []
-    for lecture_code in lecture_codes:
-        read_params[-1] = lecture_code['lecture_code']
-        lecture_groups.append(execute_raw_sql_query(read_group_query + where_query + group_by_query, read_params))
 
+    read_params = []
 
-    return JsonResponse(lecture_groups, safe=False)
+    if searchCondition and search:
+        read_query += f" AND {searchCondition} LIKE %s"
+        read_params.append(f'%{search}%')
+    else:
+        if curriculum != 'all':
+            read_query += " AND lecture_curriculum = %s"
+            read_params.append(curriculum)
+
+        if classification != 'all':
+            read_query += " AND lecture_classification = %s"
+            read_params.append(classification)
+
+        if campus != 'all':
+            read_query += " AND lecture_campus = %s"
+            read_params.append(campus)
+
+        if (univ is not None) and univ != 'all' :
+            read_query += " AND lecture_univ = %s"
+            read_params.append(univ)
+
+        if (major is not None) and major != 'all':
+            read_query += " AND lecture_major = %s"
+            read_params.append(major)
+
+    lecture_group = execute_raw_sql_query(read_query, read_params)
+
+    return JsonResponse(lecture_group, safe=False)
 
 @csrf_exempt
 def add_userbasket(request):

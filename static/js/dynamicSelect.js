@@ -7,7 +7,6 @@ $(document).ready(function () {
             url: get_classification_options_url,  // Django URL 설정에 따라 수정
             data: { selected_value: selectedValue },
             success: function (data) {
-            console.log(data)
                 var classificationSelect = $("#classificationSelect");
                 classificationSelect.empty(); // 기존 옵션을 모두 지웁니다.
                 classificationSelect.append(new Option("--전체--", "all"));
