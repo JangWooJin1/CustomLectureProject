@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <div>
-        <div>
-            교과과정
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}">
+<div class="container">
+    <div class="filter-section">
+        <div class="filter-section-top">
+            <label for="curriculumSelect">교과과정</label>
             <select id="curriculumSelect">
                 <option value="all">--전체--</option>
                 {% for curriculum in curriculum_list %}
@@ -11,26 +13,23 @@
                 {% endfor %}
             </select>
 
-            교과영역구분
+            <label for="classificationSelect">교과영역구분</label>
             <select id="classificationSelect">
                 <option value="all">--전체--</option>
             </select>
 
-            캠퍼스
+            <label for="campusSelect">캠퍼스</label>
             <select id="campusSelect">
                 <option value="all">--전체--</option>
                 {% for campus in campus_list %}
                     <option value="{{ campus }}">{{ campus }}</option>
                 {% endfor %}
             </select>
-
         </div>
 
-        <div id="selectContainer">
+        <div class="filter-section-middle" id="selectContainer"></div>
 
-        </div>
-
-        <div>
+        <div class="filter-section-bottom">
             <select id="selectSearchConditions">
                 {% for value, label in search_zip_list %}
                     <option value="{{ value }}">{{ label }}</option>
@@ -43,37 +42,29 @@
 
     <hr>
     <div class="lectureBox">
-        <div>
-            <table id="lectureTableHead" border="1">
-            </table>
-        </div>
-        <div id="lectureTable">
+        <table id="lectureTable">
 
-        </div>
+        </table>
 
     </div>
     <hr>
     <div class="basketBox">
-        <div>
-            <table id="UserBasketTableHead" border="1">
-            </table>
-        </div>
-        <div id="UserBasketTable">
+        <table id="UserBasketTable">
 
-        </div>
-
+        </table>
     </div>
-    <script>
-        var get_classification_options_url = "{% url 'search:get_classification_options' %}";
-        var get_univ_options_url = "{% url 'search:get_univ_options' %}";
-        var get_major_options_url = "{% url 'search:get_major_options' %}";
-        var get_lecture_url = "{% url 'search:get_lecture' %}";
-        var add_userbasket_url = "{% url 'search:add_userbasket' %}";
-        var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'js/dynamicSelect.js' %}"></script>
-    <script src="{% static 'js/getLecture.js' %}"></script>
-    <script src="{% static 'js/addBasket.js' %}"></script>
-    <script src="{% static 'js/deleteBasket.js' %}"></script>
+</div>
+<script>
+    var get_classification_options_url = "{% url 'search:get_classification_options' %}";
+    var get_univ_options_url = "{% url 'search:get_univ_options' %}";
+    var get_major_options_url = "{% url 'search:get_major_options' %}";
+    var get_lecture_url = "{% url 'search:get_lecture' %}";
+    var add_userbasket_url = "{% url 'search:add_userbasket' %}";
+    var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/dynamicSelect.js' %}"></script>
+<script src="{% static 'js/getLecture.js' %}"></script>
+<script src="{% static 'js/addBasket.js' %}"></script>
+<script src="{% static 'js/deleteBasket.js' %}"></script>
 {% endblock %}

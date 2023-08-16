@@ -33,16 +33,23 @@ $(document).ready(function () {
                     }
 
                     // 생성한 <select> 태그를 원하는 위치에 추가
+                    var univLabel = $('<label id="univSelectLabel" for="univSelect">대학교</label>');
+                    $('#selectContainer').append(univLabel);
                     $('#selectContainer').append(univSelect);
 
                     var majorSelect = $('<select>');
                     majorSelect.attr('id', 'majorSelect');  // 새로운 <select> 태그의 id 설정
                     majorSelect.append(new Option("--전체--", "all"));
+
+                    var majorLabel = $('<label id="majorSelectLabel" for="majorSelect">전공</label>');
+                    $('#selectContainer').append(majorLabel);
                     $('#selectContainer').append(majorSelect);
                 }
             });
         } else {
             // '전공'이 아니면 생성한 <select> 태그를 제거
+            $('#univSelectLabel').remove();
+            $('#majorSelectLabel').remove();
             $('#univSelect').remove();
             $('#majorSelect').remove();
         }
