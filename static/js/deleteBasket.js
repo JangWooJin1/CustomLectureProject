@@ -13,40 +13,22 @@ $('.basketBox').on('click', '.delete-button', function () {
             lecture_number: lectureNumber,
         },
         success: function(groups) {
+                if(lectureNumber){
+                    var itemDivId = `basket_${lectureCode}_${lectureNumber}`;
+                    console.log(itemDivId)
+                    $(`#${itemDivId}`).remove();
 
-                // 기존 테이블 내용을 지우기
-                $('#UserBasketTable').empty();
-
-                // 테이블 행을 생성하고 데이터를 추가
-                var tableRows = '';
-                for(var j=0; j<groups.length; j++){
-                    tableRows += '<details>'
-                    tableRows += '<summary>'
-                    tableRows += '<td>' + groups[j][0].lecture_curriculum + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_classification + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_code + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_name + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_credit + '</td> ';
-                    tableRows += '<td><button class="delete-button" data-lecture-code="' + groups[j][0].lecture_code + '">전체제거</button></td>';
-                    tableRows += '</summary>'
-                    var lectures = groups[j];
-
-                    for (var i = 0; i < lectures.length; i++) {
-                        var lecture = lectures[i];
-                        tableRows += '<td>' + lecture.lecture_number + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_professor + '</td> ';
-                        tableRows += '<td>' + lecture.combined_lecture_times + '</td> ';
-                        tableRows += '<td>' + lecture.combined_lecture_rooms + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_campus + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_remark + '</td> ';
-                        tableRows += '<td><button class="delete-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">제거</button></td>';
-                        tableRows += '<br>';
-                    }
-                    tableRows += '</details>'
+                    //예외) 마지막 남은 강의가 삭제되는 경우 -> 그룹 삭제도 같이
                 }
+                else{
+                    // 삭제할 태그의 id
+                    var metaDivId = `basket_${lectureCode}_meta`;
+                    var groupDivId = `basket_${lectureCode}`;
 
-                // 생성한 행을 테이블에 추가
-                $('#UserBasketTable').append(tableRows);
+                    // 해당 태그를 삭제
+                    $(`#${metaDivId}`).remove();
+                    $(`#${groupDivId}`).remove();
+                }
         },
         error: function(error) {
             // Ajax 요청 실패 시 처리

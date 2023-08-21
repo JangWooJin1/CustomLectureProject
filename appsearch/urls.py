@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from appsearch.views import Search, get_classification_options, get_univ_options, get_major_options, get_lecture, add_userbasket, delete_userbasket, get_lecture_group
+from appsearch.views import *
 
 app_name = 'search'
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path('get_lecture/', get_lecture, name='get_lecture'),
     path('add_userbasket/', add_userbasket, name='add_userbasket'),
     path('delete_userbasket/', delete_userbasket, name='delete_userbasket'),
+    path('get_userbasket_items/', get_userbasket_items, name='get_userbasket_items'),
 ]

@@ -12,45 +12,49 @@ $('.lectureBox').on('click', '.add-button', function () {
             lecture_code: lectureCode,
             lecture_number: lectureNumber,
         },
-        success: function(groups) {
+        success: function(data) {
+            // 개별 추가의 경우
+            if (lectureNumber) {
 
-                // 기존 테이블 내용을 지우기
-                $('#UserBasketTable').empty();
+                //예외) 해당 그룹의 첫 추가인 경우 -> 그룹에 해당하는 것도 같이 추가
+                var miniTable = $('#' + lectureCode).find('.mini-table');
 
-                // 테이블 행을 생성하고 데이터를 추가
-                var tableRows = '';
-                for(var j=0; j<groups.length; j++){
-                    tableRows += '<details>'
-                    tableRows += '<summary>'
-                    tableRows += '<td>' + groups[j][0].lecture_curriculum + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_classification + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_code + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_name + '</td> ';
-                    tableRows += '<td>' + groups[j][0].lecture_credit + '</td> ';
-                    tableRows += '<td><button class="delete-button" data-lecture-code="' + groups[j][0].lecture_code + '">전체제거</button></td>';
-                    tableRows += '</summary>'
-                    var lectures = groups[j];
+                if (miniTable.length === 0) {
 
-                    for (var i = 0; i < lectures.length; i++) {
-                        var lecture = lectures[i];
-                        tableRows += '<td>' + lecture.lecture_number + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_professor + '</td> ';
-                        tableRows += '<td>' + lecture.combined_lecture_times + '</td> ';
-                        tableRows += '<td>' + lecture.combined_lecture_rooms + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_campus + '</td> ';
-                        tableRows += '<td>' + lecture.lecture_remark + '</td> ';
-                        tableRows += '<td><button class="delete-button" data-lecture-code="' + lecture.lecture_code + '" data-lecture-number="' + lecture.lecture_number +  '">제거</button></td>';
-                        tableRows += '<br>';
-                    }
-                    tableRows += '</details>'
+                    var tableRows = '<div class="mini-table"  style="display: none;">';  // Use a template engine here
+                    tableRows += '<div class="mini-table-row"><div>분반</div><div>시간</div><div>교수</div><div>강의실</div><div>캠퍼스</div><div>비고</div><div>개별추가</div></div>'; // Use a template engine here
+
                 }
 
+                var tableRows = `
+                    <div id="basket_${lecture.lecture_code}_${lecture.lecture_number}" class="mini-table-row">
+                        <div>${lecture.lecture_number}</div>
+                        <div>${lecture.combined_lecture_times}</div>
+                        <div>${lecture.lecture_professor}</div>
+                        <div>${lecture.combined_lecture_rooms}</div>
+                        <div>${lecture.lecture_campus}</div>
+                        <div>${lecture.lecture_remark}</div>
+                        <div><button class="add-button" data-lecture-code="${lecture.lecture_code}" data-lecture-number="${lecture.lecture_number}">추가</button></div>
+                    </div>`;
 
-
-
+                $('#' + lectureCode).append(tableRows);
+            }
+            // 그룹 추가의 경우
+            else{
+                var tableRows = `
+                    <div id="basket_${data[0].lecture_code}_meta" class="table-row lecture_group" data-lecture-code="${data[0].lecture_code}" data-is-folded="true">
+                        <div>${data[0].lecture_curriculum}</div>
+                        <div>${data[0].lecture_classification}</div>
+                        <div>${data[0].lecture_code}</div>
+                        <div>${data[0].lecture_name}</div>
+                        <div>${data[0].lecture_credit}학점</div>
+                        <div><button class="delete-button" data-lecture-code="${data[0].lecture_code}">전체제거</button></div>
+                    </div>
+                    <div id="basket_${data[0].lecture_code}"></div>`;
 
                 // 생성한 행을 테이블에 추가
                 $('#UserBasketTable').append(tableRows);
+           }
         },
         error: function(error) {
             // Ajax 요청 실패 시 처리

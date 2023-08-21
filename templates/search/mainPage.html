@@ -8,7 +8,7 @@
             <select id="curriculumSelect">
                 <option value="all">--전체--</option>
                 {% for curriculum in curriculum_list %}
-                    <option value="{{ curriculum }}">{{ curriculum }}</option>
+                    <option value="{{ curriculum.lecture_curriculum }}">{{ curriculum.lecture_curriculum }}</option>
                 {% endfor %}
             </select>
 
@@ -21,7 +21,7 @@
             <select id="campusSelect">
                 <option value="all">--전체--</option>
                 {% for campus in campus_list %}
-                    <option value="{{ campus }}">{{ campus }}</option>
+                    <option value="{{ campus.lecture_campus }}">{{ campus.lecture_campus }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -63,6 +63,17 @@
                 <div>그룹제거</div>
             </div>
         </div>
+        {% for group in userbasket_group_list %}
+            <div id="basket_{{ group.lecture_code }}_meta" class="table-row lecture_group" data-lecture-code="{{ group.lecture_code }}" data-is-folded="true">
+                <div>{{ group.lecture_curriculum }}</div>
+                <div>{{ group.lecture_classification }}</div>
+                <div>{{ group.lecture_code }}</div>
+                <div>{{ group.lecture_name }}</div>
+                <div>{{ group.lecture_credit }}학점</div>
+                <div><button class="delete-button" data-lecture-code="{{ group.lecture_code }}">전체제거</button></div>
+            </div>
+            <div id="basket_{{ group.lecture_code }}"></div>
+        {% endfor %}
     </div>
 </div>
 <script>
@@ -73,11 +84,13 @@
     var get_lecture_url = "{% url 'search:get_lecture' %}";
     var add_userbasket_url = "{% url 'search:add_userbasket' %}";
     var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
+    var get_userbasket_items_url = "{% url 'search:get_userbasket_items' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/dynamicSelect.js' %}"></script>
 <script src="{% static 'js/getLectureGroup.js' %}"></script>
-<script src="{% static 'js/getLecture.js' %}"></script>
+<script src="{% static 'js/getLectureItem.js' %}"></script>
 <script src="{% static 'js/addBasket.js' %}"></script>
 <script src="{% static 'js/deleteBasket.js' %}"></script>
+<script src="{% static 'js/getBasketItem.js' %}"></script>
 {% endblock %}
