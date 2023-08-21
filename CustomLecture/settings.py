@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appaccount.apps.AppaccountConfig',
     'appsearch.apps.AppsearchConfig',
+    'appresult.apps.AppresultConfig',
 ]
 
 MIDDLEWARE = [

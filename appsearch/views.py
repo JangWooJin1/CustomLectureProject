@@ -282,9 +282,10 @@ def add_userbasket(request):
 
     insert_query = f"""
     INSERT INTO {appName}_userbasket (user_id_id, lecture_id_id)
-    SELECT %s, l.lecture_id
+    SELECT DISTINCT %s, l.lecture_id
     FROM {appName}_lecture AS l
-    WHERE l.lecture_code = %s
+    JOIN {appName}_lecturetime AS lt ON l.lecture_id = lt.lecture_id_id
+    WHERE l.lecture_code = %s AND lt.lecture_day IS NOT NULL
     """
 
     insert_params = [user_id, lecture_code]
