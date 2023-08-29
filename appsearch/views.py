@@ -29,25 +29,25 @@ class Search(View):
     def get(self, request):
         curriculum_list_query = f"""
         SELECT DISTINCT lecture_curriculum
-        FROM {appName}_lecture
+        FROM {appName}_lectureGroup
         """
 
         curriculum_list = execute_raw_sql_query(curriculum_list_query)
 
         campus_list_query = f"""
         SELECT DISTINCT lecture_campus
-        FROM {appName}_lecture
+        FROM {appName}_lectureItem
         """
 
         campus_list = execute_raw_sql_query(campus_list_query)
 
-        search_label_list = ["교과목", "학수번호", "교원명"]
+        search_label_list = ["교과목", "학수번호"]
         search_value_list = ["lecture_name", "lecture_code", "lecture_professor"]
         search_zip_list = zip(search_value_list, search_label_list)
 
         user_id = 'jang'
-        userbasket_group_list = get_userbasket_group(user_id)
-        print(userbasket_group_list)
+        #userbasket_group_list = get_userbasket_group(user_id)
+        userbasket_group_list= []
 
         context = {
             'curriculum_list': curriculum_list,
@@ -66,7 +66,7 @@ def get_classification_options(request):
 
     read_query = f"""
     SELECT DISTINCT lecture_classification
-    FROM {appName}_lecture
+    FROM {appName}_lectureGroup
     WHERE lecture_curriculum=%s
     """
 
@@ -80,7 +80,7 @@ def get_classification_options(request):
 def get_univ_options(request):
     read_query = f"""
     SELECT DISTINCT lecture_univ
-    FROM {appName}_lecture
+    FROM {appName}_lectureGroup
     WHERE lecture_curriculum="전공"
     """
 
@@ -94,7 +94,7 @@ def get_major_options(request):
 
     read_query =f"""
     SELECT DISTINCT lecture_major
-    FROM {appName}_lecture
+    FROM {appName}_lectureGroup
     WHERE lecture_univ = %s
     """
 
@@ -152,13 +152,13 @@ def get_lecture_group(request):
     search = request.POST.get('search')
 
     read_query = f"""
-    SELECT DISTINCT
+    SELECT
         lecture_curriculum,
         lecture_classification,
         lecture_code,
         lecture_name,
         lecture_credit
-    FROM {appName}_lecture 
+    FROM {appName}_lectureGroup
     WHERE 1=1
     """
 
