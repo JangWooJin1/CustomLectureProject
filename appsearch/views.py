@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Lecture
+from .models import *
 from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

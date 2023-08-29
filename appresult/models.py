@@ -1,12 +1,12 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-from appsearch.models import Lecture
+from appsearch.models import LectureItem
 from appaccount.models import User
 # Create your models here.
 
 class MyTimeTable(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    lecture_id = models.ForeignKey(Lecture, on_delete=models.CASCADE)
+    lecture_id = models.ForeignKey(LectureItem, on_delete=models.CASCADE)
     class_num = models.IntegerField()
 
     class Meta:
