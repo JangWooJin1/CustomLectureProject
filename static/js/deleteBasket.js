@@ -13,19 +13,27 @@ $('.basketBox').on('click', '.delete-button', function () {
             lecture_number: lectureNumber,
         },
         success: function(groups) {
+                var metaDivId = `basket_${lectureCode}_group`;
+                var groupDivId = `basket_${lectureCode}`;
+
+                //개별 삭제인 경우
                 if(lectureNumber){
-                    var itemDivId = `basket_${lectureCode}_${lectureNumber}`;
-                    console.log(itemDivId)
-                    $(`#${itemDivId}`).remove();
+                    var itemDivId = `#basket_${lectureCode}_${lectureNumber}_item`;
+
+                    $(itemDivId).remove();
 
                     //예외) 마지막 남은 강의가 삭제되는 경우 -> 그룹 삭제도 같이
+                        if ($(`#${groupDivId} .mini-table`).children().length === 1) {
+                            console.log("설마 이거 실행됨?22");
+                            $(`#${metaDivId}`).remove();
+                            $(`#${groupDivId}`).remove();
+                        }
+                    console.log("되나3");
                 }
+                //그룹 삭제인 경우
                 else{
-                    // 삭제할 태그의 id
-                    var metaDivId = `basket_${lectureCode}_meta`;
-                    var groupDivId = `basket_${lectureCode}`;
-
                     // 해당 태그를 삭제
+                    console.log("설마 이거 실행됨?");
                     $(`#${metaDivId}`).remove();
                     $(`#${groupDivId}`).remove();
                 }

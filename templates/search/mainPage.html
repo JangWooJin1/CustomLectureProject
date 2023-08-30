@@ -62,22 +62,22 @@
     <div class="basketBox">
         <div class="table" id="UserBasketTable">
             <div class="table-row">
-                <div>교과과정</div>
-                <div>교과영역구분</div>
-                <div>학수번호</div>
-                <div>과목명</div>
-                <div>학점</div>
-                <div>그룹제거</div>
+                <div class="group_curriculum">교과과정</div>
+                <div class="group_classification">교과영역구분</div>
+                <div class="group_code">학수번호</div>
+                <div class="group_name">과목명</div>
+                <div class="group_credit">학점</div>
+                <div class="group_button">그룹제거</div>
             </div>
         </div>
         {% for group in userbasket_group_list %}
-            <div id="basket_{{ group.lecture_code }}_meta" class="table-row lecture_group" data-lecture-code="{{ group.lecture_code }}" data-is-folded="true">
-                <div>{{ group.lecture_curriculum }}</div>
-                <div>{{ group.lecture_classification }}</div>
-                <div>{{ group.lecture_code }}</div>
-                <div>{{ group.lecture_name }}</div>
-                <div>{{ group.lecture_credit }}학점</div>
-                <div><button class="delete-button" data-lecture-code="{{ group.lecture_code }}">전체제거</button></div>
+            <div id="basket_{{ group.lecture_code }}_group" class="table-row lecture_group" data-lecture-code="{{ group.lecture_code }}" data-is-folded="true">
+                <div class="group_curriculum">{{ group.lecture_curriculum }}</div>
+                <div class="group_classification">{{ group.lecture_classification }}</div>
+                <div class="group_code">{{ group.lecture_code }}</div>
+                <div class="group_name">{{ group.lecture_name }}</div>
+                <div class="group_credit">{{ group.lecture_credit }}학점</div>
+                <div class="group_button"><button class="delete-button" data-lecture-code="{{ group.lecture_code }}">전체제거</button></div>
             </div>
             <div id="basket_{{ group.lecture_code }}"></div>
         {% endfor %}
@@ -88,7 +88,7 @@
     var get_univ_options_url = "{% url 'search:get_univ_options' %}";
     var get_major_options_url = "{% url 'search:get_major_options' %}";
     var get_lecture_group_url = "{% url 'search:get_lecture_group' %}";
-    var get_lecture_url = "{% url 'search:get_lecture' %}";
+    var get_lecture_item_url = "{% url 'search:get_lecture_item' %}";
     var add_userbasket_url = "{% url 'search:add_userbasket' %}";
     var delete_userbasket_url = "{% url 'search:delete_userbasket' %}";
     var get_userbasket_items_url = "{% url 'search:get_userbasket_items' %}";

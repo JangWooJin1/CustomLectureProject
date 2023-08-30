@@ -1,3 +1,9 @@
+// 원하는 이벤트를 강제로 발생시키는 함수
+function triggerEvent(element, eventName) {
+    var event = new Event(eventName);
+    element.dispatchEvent(event);
+}
+
 // '추가' 버튼 클릭 이벤트 핸들러
 $('.lectureBox').on('click', '.add-button', function () {
     // 해당 버튼의 data-lecture-code 속성을 가져옴
@@ -16,44 +22,69 @@ $('.lectureBox').on('click', '.add-button', function () {
             // 개별 추가의 경우
             if (lectureNumber) {
 
-                //예외) 해당 그룹의 첫 추가인 경우 -> 그룹에 해당하는 것도 같이 추가
-                var miniTable = $('#' + lectureCode).find('.mini-table');
+                //예외1) 추가하려는 강의의 그룹이 장바구니에 존재x -> 그룹 정보를 장바구니에 추가
+                console.log("장바구니 여부 확인 전");
+                var basketGroupElement = $(`#basket_${lectureCode}_group`);
 
-                if (miniTable.length === 0) {
+                console.log(basketGroupElement);
+                if (basketGroupElement.length === 0) {
+                    console.log("장바구니 예외 처리 처음");
+                    var groupElement = $(`#${lectureCode}_group`);
+                    var copyGroupElement = groupElement.clone().prop('id', `basket_${lectureCode}_group`);
 
-                    var tableRows = '<div class="mini-table"  style="display: none;">';  // Use a template engine here
-                    tableRows += '<div class="mini-table-row"><div>분반</div><div>시간</div><div>교수</div><div>강의실</div><div>캠퍼스</div><div>비고</div><div>개별추가</div></div>'; // Use a template engine here
+                    var copyButton = copyGroupElement.find('.add-button');
+                    copyButton
+                        .removeClass('add-button')
+                        .addClass('delete-button')
+                        .text('제거');
 
+                    var detailElement = `<div id="basket_${lectureCode}"></div>`;
+
+                    $('#UserBasketTable').append(copyGroupElement);
+                    $('#UserBasketTable').append(detailElement);
+
+                    basketGroupElement = $(`#basket_${lectureCode}_group`);
+                    console.log("장바구니 예외 처리 끝")
                 }
 
-                var tableRows = `
-                    <div id="basket_${lecture.lecture_code}_${lecture.lecture_number}" class="mini-table-row">
-                        <div>${lecture.lecture_number}</div>
-                        <div>${lecture.combined_lecture_times}</div>
-                        <div>${lecture.lecture_professor}</div>
-                        <div>${lecture.combined_lecture_rooms}</div>
-                        <div>${lecture.lecture_campus}</div>
-                        <div>${lecture.lecture_remark}</div>
-                        <div><button class="add-button" data-lecture-code="${lecture.lecture_code}" data-lecture-number="${lecture.lecture_number}">추가</button></div>
-                    </div>`;
+                //예외2) 해당 그룹의 미니 테이블이 존재하지 않는 경우 -> 미니 테이블을 그룹에 추가
+                var miniTableElement = $(`#basket_${lectureCode}`).find('.mini-table');
 
-                $('#' + lectureCode).append(tableRows);
+                if(miniTableElement.length === 0){
+                    console.log("미니테이블 예외 처리 전");
+                    var basketGroupElement2 = document.querySelector(`#basket_${lectureCode}_group`);
+                    triggerEvent(basketGroupElement2, 'click');
+                    miniTableElement = $(`#basket_${lectureCode}`).find('.mini-table');
+                    console.log("미니테이블 예외 처리 후");
+                }
+
+                // 강의조회에서 개별 강의 정보 가져와 반영
+                var itemElement = $(`#${lectureCode}_${lectureNumber}_item`);
+                var copyItemElement = itemElement.clone().prop('id', `basket_${lectureCode}_${lectureNumber}_item`);
+
+                var copyItemButton = copyItemElement.find('.add-button');
+                copyItemButton
+                    .removeClass('add-button')
+                    .addClass('delete-button')
+                    .text('제거');
+
+                miniTableElement.append(copyItemElement);
             }
             // 그룹 추가의 경우
             else{
-                var tableRows = `
-                    <div id="basket_${data[0].lecture_code}_meta" class="table-row lecture_group" data-lecture-code="${data[0].lecture_code}" data-is-folded="true">
-                        <div>${data[0].lecture_curriculum}</div>
-                        <div>${data[0].lecture_classification}</div>
-                        <div>${data[0].lecture_code}</div>
-                        <div>${data[0].lecture_name}</div>
-                        <div>${data[0].lecture_credit}학점</div>
-                        <div><button class="delete-button" data-lecture-code="${data[0].lecture_code}">전체제거</button></div>
-                    </div>
-                    <div id="basket_${data[0].lecture_code}"></div>`;
+                var groupElement = $(`#${lectureCode}_group`);
+                var copyGroupElement = groupElement.clone().prop('id', `basket_${lectureCode}_group`);
 
-                // 생성한 행을 테이블에 추가
-                $('#UserBasketTable').append(tableRows);
+                var copyButton = copyGroupElement.find('.add-button');
+                copyButton
+                    .removeClass('add-button')
+                    .addClass('delete-button')
+                    .text('제거');
+
+                var detailElement = `<div id="basket_${lectureCode}"></div>`;
+
+                $('#UserBasketTable').append(copyGroupElement);
+                $('#UserBasketTable').append(detailElement);
            }
         },
         error: function(error) {
