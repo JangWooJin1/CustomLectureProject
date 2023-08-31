@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import *
+from .models import Lecture, LectureRoom, LectureTime
 
 # Register your models here.
-admin.site.register(LectureGroup)
-admin.site.register(LectureItem)
-admin.site.register(LectureItemSchedule)
-admin.site.register(UserBasket)
+admin.site.register(Lecture)
+admin.site.register(LectureRoom)
+admin.site.register(LectureTime)

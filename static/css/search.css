@@ -5,12 +5,6 @@
   align-items: center;
 }
 
-.baketBoxHead {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .container > div {
     width: 1100px;
 }
@@ -61,6 +55,7 @@ select {
     height: 300px;
     overflow-y: auto; /* 세로 스크롤 생성 */
     border: 1px solid #ccc; /* 보더 추가 (선택 사항) */
+    margin-top: 10px;
     font-size: 12px; /* 원하는 폰트 크기 설정 */
     padding: 20px;
 }

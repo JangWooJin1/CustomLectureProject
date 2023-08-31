@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import *
+from .models import Lecture
 from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -29,24 +29,25 @@ class Search(View):
     def get(self, request):
         curriculum_list_query = f"""
         SELECT DISTINCT lecture_curriculum
-        FROM {appName}_lectureGroup
+        FROM {appName}_lecture
         """
 
         curriculum_list = execute_raw_sql_query(curriculum_list_query)
 
         campus_list_query = f"""
         SELECT DISTINCT lecture_campus
-        FROM {appName}_lectureItem
+        FROM {appName}_lecture
         """
 
         campus_list = execute_raw_sql_query(campus_list_query)
 
-        search_label_list = ["교과목", "학수번호"]
+        search_label_list = ["교과목", "학수번호", "교원명"]
         search_value_list = ["lecture_name", "lecture_code", "lecture_professor"]
         search_zip_list = zip(search_value_list, search_label_list)
 
         user_id = 'jang'
         userbasket_group_list = get_userbasket_group(user_id)
+        print(userbasket_group_list)
 
         context = {
             'curriculum_list': curriculum_list,
@@ -65,7 +66,7 @@ def get_classification_options(request):
 
     read_query = f"""
     SELECT DISTINCT lecture_classification
-    FROM {appName}_lectureGroup
+    FROM {appName}_lecture
     WHERE lecture_curriculum=%s
     """
 
@@ -79,7 +80,7 @@ def get_classification_options(request):
 def get_univ_options(request):
     read_query = f"""
     SELECT DISTINCT lecture_univ
-    FROM {appName}_lectureGroup
+    FROM {appName}_lecture
     WHERE lecture_curriculum="전공"
     """
 
@@ -93,7 +94,7 @@ def get_major_options(request):
 
     read_query =f"""
     SELECT DISTINCT lecture_major
-    FROM {appName}_lectureGroup
+    FROM {appName}_lecture
     WHERE lecture_univ = %s
     """
 
@@ -104,31 +105,33 @@ def get_major_options(request):
     return JsonResponse(major_list, safe=False)
 
 @csrf_exempt
-def get_lecture_item(request):
+def get_lecture(request):
     code = request.POST.get('lecture_code')
-    campus = request.POST.get('campus')
 
     read_query = f"""
     SELECT
-        lecture_id,
-        lecture_code_id,
+        lecture_code,
         lecture_number,
         lecture_professor,
         lecture_campus,
         lecture_remark,
         GROUP_CONCAT(
-            CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+            DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+            ORDER BY lecture_day
             SEPARATOR ', '
         ) AS combined_lecture_times,
         GROUP_CONCAT(
-            lecture_room
+            DISTINCT lecture_room
+            ORDER BY lecture_room 
             SEPARATOR ', '
         ) AS combined_lecture_rooms
     FROM
-        {appName}_lectureItem
+        {appName}_lecture
     INNER JOIN 
-        {appName}_lectureItemSchedule ON {appName}_lectureItem.lecture_id = {appName}_lectureItemSchedule.lecture_id_id
-    WHERE lecture_code_id = %s
+        {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
+    INNER JOIN 
+        {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
+    WHERE lecture_code = %s
     GROUP BY lecture_id
     """
 
@@ -149,13 +152,13 @@ def get_lecture_group(request):
     search = request.POST.get('search')
 
     read_query = f"""
-    SELECT
+    SELECT DISTINCT
         lecture_curriculum,
         lecture_classification,
         lecture_code,
         lecture_name,
         lecture_credit
-    FROM {appName}_lectureGroup
+    FROM {appName}_lecture 
     WHERE 1=1
     """
 
@@ -202,9 +205,7 @@ def get_userbasket_group(user_id, lecture_code=None):
     INNER JOIN 
         appaccount_user on {appName}_userbasket.user_id_id = appaccount_user.user_id 
     INNER JOIN 
-        {appName}_lectureItem on {appName}_userbasket.lecture_id_id = {appName}_lectureItem.lecture_id
-    INNER JOIN 
-        {appName}_lectureGroup on {appName}_lectureItem.lecture_code_id = {appName}_lectureGroup.lecture_code
+        {appName}_lecture on {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
     WHERE
         user_id = %s
     """
@@ -223,17 +224,19 @@ def get_userbasket_group(user_id, lecture_code=None):
 def get_userbasket_item(user_id, lecture_code, lecture_number=None):
     read_query = f"""
     SELECT
-        lecture_code_id,
+        lecture_code,
         lecture_number,
         lecture_professor,
         lecture_campus,
         lecture_remark,
         GROUP_CONCAT(
             DISTINCT CONCAT(lecture_day, ' ', lecture_start_time, '-', lecture_end_time)
+            ORDER BY lecture_day
             SEPARATOR ', '
         ) AS combined_lecture_times,
         GROUP_CONCAT(
             DISTINCT lecture_room
+            ORDER BY lecture_room 
             SEPARATOR ', '
         ) AS combined_lecture_rooms
     FROM  
@@ -241,11 +244,13 @@ def get_userbasket_item(user_id, lecture_code, lecture_number=None):
     INNER JOIN 
         appaccount_user on {appName}_userbasket.user_id_id = appaccount_user.user_id 
     INNER JOIN 
-        {appName}_lectureItem on {appName}_userbasket.lecture_id_id = {appName}_lectureItem.lecture_id
+        {appName}_lecture on {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
     INNER JOIN 
-        {appName}_lectureItemSchedule ON {appName}_lectureItem.lecture_id = {appName}_lectureItemSchedule.lecture_id_id
+        {appName}_lecturetime ON {appName}_lecture.lecture_id = {appName}_lecturetime.lecture_id_id
+    INNER JOIN 
+        {appName}_lectureroom ON {appName}_lecture.lecture_id = {appName}_lectureroom.lecture_id_id
     WHERE 
-        user_id = %s AND lecture_code_id = %s
+        user_id = %s AND lecture_code = %s
     """
 
     read_params = [user_id, lecture_code]
@@ -274,14 +279,13 @@ def add_userbasket(request):
     user_id = 'jang'
     lecture_code = request.POST.get('lecture_code')
     lecture_number = request.POST.get('lecture_number')
-    lecture_campus = request.POST.get('campus')
 
     insert_query = f"""
     INSERT INTO {appName}_userbasket (user_id_id, lecture_id_id)
     SELECT DISTINCT %s, l.lecture_id
-    FROM {appName}_lectureItem AS l
-    JOIN {appName}_lectureItemSchedule AS lt ON l.lecture_id = lt.lecture_id_id
-    WHERE l.lecture_code_id = %s AND lt.lecture_day IS NOT NULL
+    FROM {appName}_lecture AS l
+    JOIN {appName}_lecturetime AS lt ON l.lecture_id = lt.lecture_id_id
+    WHERE l.lecture_code = %s AND lt.lecture_day IS NOT NULL
     """
 
     insert_params = [user_id, lecture_code]
@@ -290,21 +294,14 @@ def add_userbasket(request):
         insert_query += " AND l.lecture_number = %s"
         insert_params.append(lecture_number)
 
-    if lecture_campus:
-        insert_query += " AND l.lecture_campus = %s"
-        insert_params.append(lecture_campus)
+    execute_raw_sql_query(insert_query,insert_params)
 
-    execute_raw_sql_query(insert_query, insert_params)
-
-    response_data = {'message': 'Success'}
-    return JsonResponse(response_data)
-
-    # if lecture_number:
-    #     basket_item = get_userbasket_item(user_id, lecture_code, lecture_number)
-    #     return JsonResponse(basket_item, safe=False)
-    # else:
-    #     basket_group = get_userbasket_group(user_id, lecture_code)
-    #     return JsonResponse(basket_group, safe=False)
+    if lecture_number:
+        basket_item = get_userbasket_item(user_id, lecture_code, lecture_number)
+        return JsonResponse(basket_item, safe=False)
+    else:
+        basket_group = get_userbasket_group(user_id, lecture_code)
+        return JsonResponse(basket_group, safe=False)
 
 @csrf_exempt
 def delete_userbasket(request):
@@ -315,8 +312,8 @@ def delete_userbasket(request):
     delete_query = f"""
     DELETE {appName}_userbasket
     FROM {appName}_userbasket
-    INNER JOIN {appName}_lectureItem ON {appName}_userbasket.lecture_id_id = {appName}_lectureItem.lecture_id
-    WHERE user_id_id = %s AND lecture_code_id = %s
+    INNER JOIN {appName}_lecture ON {appName}_userbasket.lecture_id_id = {appName}_lecture.lecture_id
+    WHERE user_id_id = %s AND lecture_code = %s
     """
 
     delete_params = [user_id, lecture_code]

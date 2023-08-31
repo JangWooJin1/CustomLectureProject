@@ -31,23 +31,23 @@ $(document).ready(function () {
                 // 테이블 행을 생성하고 데이터를 추가
                 var tableRows = `
                     <div class="table-row">
-                        <div class="group_curriculum">교과과정</div>
-                        <div class="group_classification">교과영역구분</div>
-                        <div class="group_code">학수번호</div>
-                        <div class="group_name">과목명</div>
-                        <div class="group_credit">학점</div>
-                        <div class="group_button">그룹추가</div>
+                        <div>교과과정</div>
+                        <div>교과영역구분</div>
+                        <div>학수번호</div>
+                        <div>과목명</div>
+                        <div>학점</div>
+                        <div>그룹추가</div>
                     </div>`;
 
                 for (var i = 0; i < groups.length; i++) {
                     tableRows += `
-                        <div id="${groups[i].lecture_code}_group" class="table-row lecture_group" data-lecture-code="${groups[i].lecture_code}" data-is-folded="true">
-                            <div class="group_curriculum">${groups[i].lecture_curriculum}</div>
-                            <div class="group_classification">${groups[i].lecture_classification}</div>
-                            <div class="group_code">${groups[i].lecture_code}</div>
-                            <div class="group_name">${groups[i].lecture_name}</div>
-                            <div class="group_credit">${groups[i].lecture_credit}학점</div>
-                            <div class="group_button"><button class="add-button" data-lecture-code="${groups[i].lecture_code}">추가</button></div>
+                        <div class="table-row lecture_group" data-lecture-code="${groups[i].lecture_code}" data-is-folded="true">
+                            <div>${groups[i].lecture_curriculum}</div>
+                            <div>${groups[i].lecture_classification}</div>
+                            <div>${groups[i].lecture_code}</div>
+                            <div>${groups[i].lecture_name}</div>
+                            <div>${groups[i].lecture_credit}학점</div>
+                            <div><button class="add-button" data-lecture-code="${groups[i].lecture_code}">추가</button></div>
                         </div>
                         <div id="${groups[i].lecture_code}"></div>`;
                 }
