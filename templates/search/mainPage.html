@@ -55,9 +55,7 @@
 
     <div class="baketBoxHead">
         <h3>장바구니</h3>
-        <form action="/result" method="get">
-            <button type="submit">조합 보기</button>
-        </form>
+        <a href="/result">조합 보기</a>
     </div>
     <div class="basketBox">
         <div class="table" id="UserBasketTable">
@@ -77,7 +75,7 @@
                 <div class="group_code">{{ group.lecture_code }}</div>
                 <div class="group_name">{{ group.lecture_name }}</div>
                 <div class="group_credit">{{ group.lecture_credit }}학점</div>
-                <div class="group_button"><button class="delete-button" data-lecture-code="{{ group.lecture_code }}">전체제거</button></div>
+                <div class="group_button"><button class="delete-button" data-lecture-code="{{ group.lecture_code }}">제거</button></div>
             </div>
             <div id="basket_{{ group.lecture_code }}"></div>
         {% endfor %}

@@ -91,6 +91,7 @@ $('.lectureBox').on('click', '.add-button', function () {
             // Ajax 요청 실패 시 처리
             console.error('강의 추가 요청 실패', error);
             // 실패한 경우 사용자에게 알림 등을 표시하는 등의 작업 수행
+            alert('이미 추가된 강의입니다');
         }
     });
 });
