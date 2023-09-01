@@ -5,5 +5,5 @@ from appresult.views import *
 app_name = 'result'
 
 urlpatterns = [
-    #path('', Search.as_view(template_name='search/mainPage.html'), name='result'),
+    path('', Result.as_view(template_name='result/resultPage.html'), name='result'),
 ]
