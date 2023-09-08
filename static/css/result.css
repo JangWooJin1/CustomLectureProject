@@ -1,0 +1,48 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin-right: 20px;
+}
+
+.view-section {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+}
+
+
+.TimeTableBox {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-x: auto;
+}
+
+.TimeTableBox div {
+    margin-right: 20px;
+}
+
+.TimeTable {
+    position: relative;
+    min-width: 100px; /* 최소 너비를 지정하여 고정같이 보이도록 함 */
+    width: 100px; /* 고정된 너비를 지정 */
+    height: 90px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.lecture {
+    position: absolute;
+    background-color: #3498db;
+    width: 20px;
+    border: none;
+}
