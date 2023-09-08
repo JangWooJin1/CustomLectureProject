@@ -1,24 +1,88 @@
-.main {
+/*양뱡향 input range*/
+.multi-range {
+  position: relative;
+  width: 100%;
+  max-width: 150px;
+}
+
+.slider {
+  position: relative;
+  z-index: 1;
+  height: 10px;
+  margin: 0 15px;
+}
+.slider > .track {
+  position: absolute;
+  width: 118%;
+  z-index: 1;
+  left: -9%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #c6aee7;
+}
+.slider > .range {
+  position: absolute;
+  z-index: 2;
+  left: 0%;
+  right: 0%;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+  background-color: #6200ee;
+}
+.slider > .thumb {
+  position: absolute;
+  top: 70%;
+  z-index: 3;
+  width: 15px;
+  height: 15px;
+  background-color: #6200ee;
+  border-radius: 50%;
+}
+.slider > .thumb.left {
+  left: 0%;
+  transform: translate(-10px, -10px);
+}
+.slider > .thumb.right {
+  right: 0%;
+  transform: translate(10px, -10px);
+}
+
+input[type="range"] {
+  position: absolute;
+  /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+  pointer-events: none;
+  -webkit-appearance: none;
+  z-index: 2;
+  height: 10px;
+  width: 100%;
+  opacity: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  /* 겹쳐진 두 thumb를 모두 활성화 */
+  pointer-events: all;
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 0 none;
+  background-color: red;
+  cursor: pointer;
+
+  /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+  -webkit-appearance: none;
+}
+
+.output-value {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    width: auto;
+    justify-content: space-between;
 }
+/*양뱡향 input range*/
 
-.filter-section {
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    margin-right: 20px;
-}
-
-.view-section {
-    display: flex;
-    flex-direction: column;
-    width: 1000px;
-}
-
-
+/*미니 시간표*/
 .TimeTableBox {
     display: flex;
     flex-direction: row;
@@ -45,4 +109,25 @@
     background-color: #3498db;
     width: 20px;
     border: none;
+}
+/*미니 시간표*/
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin-right: 20px;
+}
+
+.view-section {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
 }

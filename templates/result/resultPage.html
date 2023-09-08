@@ -10,6 +10,40 @@
 
     <div class="main">
         <div class="filter-section">
+            <div id="slider-1" class="multi-range" >
+              <div class="multi-range-slider">
+                <input class="range-left" type="range" min="8" max="22" value="8" />
+                <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                <div class="slider">
+                  <div class="track"></div>
+                  <div class="range"></div>
+                  <div class="thumb left"></div>
+                  <div class="thumb right"></div>
+                </div>
+              </div>
+              <div class="output-value">
+                <div class="output-left">8</div>
+                <div class="output-right">22</div>
+              </div>
+            </div>
+            <div id="slider-2" class="multi-range">
+              <div class="multi-range-slider">
+                <input class="range-left" type="range" min="3" max="24" value="0" />
+                <input class="range-right" type="range" min="3" max="24" value="24" />
+
+                <div class="slider">
+                  <div class="track"></div>
+                  <div class="range"></div>
+                  <div class="thumb left"></div>
+                  <div class="thumb right"></div>
+                </div>
+              </div>
+              <div class="output-value">
+                <div class="output-left">3</div>
+                <div class="output-right">24</div>
+              </div>
+            </div>
             <button id="submitButton">조회</button>
         </div>
 
@@ -19,11 +53,11 @@
         </div>
     </div>
 
-
 <script>
     var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/result/getLectureCombi.js' %}"></script>
+<script src="{% static 'js/result/multiRangeSlider.js' %}"></script>
 </body>
 </html>
