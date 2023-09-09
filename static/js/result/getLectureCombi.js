@@ -34,9 +34,60 @@ function getRandomColor() {
 
 $(document).ready(function () {
     $("#submitButton").click(function () {
+        var campus = $("input[name='campus']:checked").val();
+
+        var time = {};
+        // 모든 multi-range 요소를 순회하며 처리합니다.
+        $(".time").find(".multi-range").each(function () {
+            var checkbox = $(this).find(".multi-range-checkbox");
+            var dayLabel = $(this).find(".multi-range-label").text();
+
+            // checkbox가 선택된 경우만 처리합니다.
+            if (checkbox.is(":checked")) {
+                var startValue = $(this).find(".range-left").val();
+                var endValue = $(this).find(".range-right").val();
+
+                // 딕셔너리에 해당 요일과 시간 범위를 저장합니다.
+                time[dayLabel] = {
+                    "start": parseInt(startValue),
+                    "end": parseInt(endValue)
+                };
+            }
+        });
+
+        var credit = {};
+        // 모든 multi-range 요소를 순회하며 처리합니다.
+        $(".credit").find(".multi-range").each(function () {
+            var checkbox = $(this).find(".multi-range-checkbox");
+            var keyLabel = $(this).find(".multi-range-label").text();
+
+            // checkbox가 선택된 경우만 처리합니다.
+            if (checkbox.is(":checked")) {
+                var minValue = $(this).find(".range-left").val();
+                var maxValue = $(this).find(".range-right").val();
+
+                credit[keyLabel] = {
+                    "min": parseInt(minValue),
+                    "max": parseInt(maxValue)
+                };
+            }
+        });
+
+        var group = [];
+        $("#selected-groups div").each(function () {
+            var id = $(this).attr("id");
+            group.push(id);
+        });
+
         $.ajax({
             url: get_lecture_combinations,  // 실제 URL로 교체
-            method: "GET",  // 필요에 따라 요청 메서드 수정
+            method: "POST",  // 필요에 따라 요청 메서드 수정
+            data:{
+                'campus' : campus,
+                'time' : JSON.stringify(time),
+                'credit' : JSON.stringify(credit),
+                'group' : JSON.stringify(group),
+            },
             success: function (datas) {
                 var count_all_combinations = datas.count_all_combinations;
 

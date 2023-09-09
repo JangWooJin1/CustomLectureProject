@@ -165,8 +165,13 @@ def calculate_all_combinations(lecture_Combination_results):
 
     return count_all_combination
 
+@csrf_exempt
 def get_lecture_combinations(request):
     user_id = 'jang'
+    campus = request.POST.get('campus')
+    time = request.POST.get('time')
+    credit = request.POST.get('credit')
+    group = request.POST.get('group')
 
     lecture_list_query = f"""
     SELECT
@@ -191,6 +196,26 @@ def get_lecture_combinations(request):
     """
 
     lecture_list_query_params = [user_id]
+
+
+    if campus != "전체":
+        lecture_list_query += " AND li.lecture_campus = %s"
+        lecture_list_query_params.append(campus)
+
+    if time is not None:
+        lecture_list_query += """ AND li.lecture_id NOT IN (
+            SELECT 
+                sli.lecture_id
+            FROM 
+                appsearch_lectureItem AS sli
+            INNER JOIN
+                appsearch_lectureItemSchedule AS sls ON sli.lecture_id = sls.lecture_id_id
+            WHERE
+                sls.lecture_day
+            
+        
+        )
+        """
 
     lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
 
