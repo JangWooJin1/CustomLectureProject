@@ -37,7 +37,13 @@ $(document).ready(function () {
         $.ajax({
             url: get_lecture_combinations,  // 실제 URL로 교체
             method: "GET",  // 필요에 따라 요청 메서드 수정
-            success: function (combinations) {
+            success: function (datas) {
+                var count_all_combinations = datas.count_all_combinations;
+
+                var count_text = `총 ${count_all_combinations}개의 시간표가 생성되었습니다.`
+                $(".calculateCombination").text(count_text);
+
+                var combinations = datas.valid_combinations;
                 // 기존 시간표 내용을 지웁니다
                 $(".TimeTableBox").empty();
 

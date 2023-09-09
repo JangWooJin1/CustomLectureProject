@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 from itertools import combinations, product
-import copy
+import math
 
 appName = "appresult"
 
@@ -36,7 +36,7 @@ def generate_group_combinations(groups):
     return result
 
 # myLecture와 allTimeTable를 형성하는 함수
-def getAllLectureCombinations(basket_dict):
+def getGroupCombinations(basket_dict):
     basket_group_list = basket_dict.keys()
 
     # nCr에서 n값 구하기
@@ -55,15 +55,22 @@ def getAllLectureCombinations(basket_dict):
     for r in range(min_r, max_r + 1):
         combination_group_list += find_combinations(basket_group_list, r)
 
-    result = []
+    group_combinations = []
     # 생성된 그룹 조합에서 모든 강의 조합 보기
     for combination in combination_group_list:
         groups = []
         for group in combination:
             groups.append(basket_dict[group])
-        result += generate_group_combinations(groups)
+        group_combinations.append(groups)
 
-    return result
+    return group_combinations
+
+def getAllCombinations(group_combinations):
+    all_combinations = []
+    for groups in group_combinations:
+        all_combinations += generate_group_combinations(groups)
+
+    return all_combinations
 
 def checkTimeConflict(selected_lectures, lecture):
     for selected_lecture in selected_lectures:
@@ -74,10 +81,10 @@ def checkTimeConflict(selected_lectures, lecture):
 
     return False
 
-def getValidLectureCombinations(lecture_Combination_results, lecture_list):
+def getValidCombinations(all_combinations, lecture_list):
     valid_combinations = []  # 유효한 Combination을 저장할 빈 리스트
 
-    for Combination in lecture_Combination_results:
+    for Combination in all_combinations:
         selected_lectures = []
         is_valid = True
 
@@ -127,6 +134,36 @@ class Result(View):
     def post(self, request):
         pass
 
+def calculate_group_combinations(basket_dict):
+    basket_group_list = basket_dict.keys()
+
+    # nCr에서 n값 구하기
+    n = len(basket_group_list)
+
+    # nCr에서 r값 범위 정하기 2~최대10
+    min_r = 2
+    max_r = -1
+    if n > 10:
+        max_r = 10
+    else:
+        max_r = n
+
+    # 그룹끼리 조합 보기
+    count_group_combination = 0
+    for r in range(min_r, max_r + 1):
+        count_group_combination += math.comb(n, r)
+
+    return count_group_combination
+
+def calculate_all_combinations(lecture_Combination_results):
+    count_all_combination = 0
+    for combination in lecture_Combination_results:
+        temp = 1
+        for group in combination:
+            temp = temp * len(group)
+        count_all_combination += temp
+
+    return count_all_combination
 
 def get_lecture_combinations(request):
     user_id = 'jang'
@@ -169,8 +206,21 @@ def get_lecture_combinations(request):
         if lecture_id not in basket_dict[lecture_code_id]:
             basket_dict[lecture_code_id].append(lecture_id)
 
-    lecture_Combination_results = getAllLectureCombinations(basket_dict)
+    count_group_combinations = calculate_group_combinations(basket_dict)
+    print(count_group_combinations)
+    #@@@@@@@@그룹 조합 결과가 많으면 뒤의 알고리즘 종료 구현
+    group_combinations= getGroupCombinations(basket_dict)
 
-    valid_lecture_Combination_results = getValidLectureCombinations(lecture_Combination_results, lecture_list)
+    count_all_combinations = calculate_all_combinations(group_combinations)
+    print(count_all_combinations)
+    # @@@@@@@@최종 조합 결과가 많으면 뒤의 알고리즘 종료 구현
+    all_combinations = getAllCombinations(group_combinations)
 
-    return JsonResponse(valid_lecture_Combination_results, safe=False)
+    valid_combinations = getValidCombinations(all_combinations, lecture_list)
+
+    datas = {
+        'count_all_combinations' : count_all_combinations,
+        'valid_combinations' : valid_combinations
+    }
+
+    return JsonResponse(datas, safe=False)
