@@ -44,3 +44,6 @@ function initializeMultiRangeSlider(sliderId) {
 initializeMultiRangeSlider("slider-1");
 initializeMultiRangeSlider("slider-2");
 initializeMultiRangeSlider("slider-3");
+initializeMultiRangeSlider("slider-4");
+initializeMultiRangeSlider("slider-5");
+initializeMultiRangeSlider("slider-6");

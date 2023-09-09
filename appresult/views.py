@@ -100,52 +100,27 @@ class Result(View):
     def get(self, request):
         user_id = 'jang'
 
-        lecture_list_query = f"""
-        SELECT
-            li.lecture_id,
-            li.lecture_code_id,
-            lg.lecture_name,
-            li.lecture_professor,
-            ls.lecture_room,
-            ls.lecture_day,
-            ls.lecture_start_time,
-            ls.lecture_end_time
+        group_list_query = f"""
+        SELECT DISTINCT
+            lg.lecture_code,
+            lg.lecture_name
         FROM 
             appsearch_userbasket AS ub
         INNER JOIN
             appsearch_lectureItem AS li ON li.lecture_id = ub.lecture_id_id
         INNER JOIN
             appsearch_lectureGroup AS lg ON lg.lecture_code = li.lecture_code_id
-        INNER JOIN
-            appsearch_lectureItemSchedule AS ls ON li.lecture_id = ls.lecture_id_id
         WHERE
             ub.user_id_id = %s
         """
 
-        lecture_list_query_params = [user_id]
+        group_list_query_params = [user_id]
 
-        lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
+        group_list = execute_raw_sql_query(group_list_query, group_list_query_params)
 
-        basket_dict = {}
-
-        for item in lecture_list:
-            lecture_id = item['lecture_id']
-            lecture_code_id = item['lecture_code_id']
-
-            if lecture_code_id not in basket_dict:
-                basket_dict[lecture_code_id] = []
-
-            if lecture_id not in basket_dict[lecture_code_id]:
-                basket_dict[lecture_code_id].append(lecture_id)
-
-        lecture_Combination_results = getAllLectureCombinations(basket_dict)
-
-        valid_lecture_Combination_results = getValidLectureCombinations(lecture_Combination_results, lecture_list)
-
-        print(valid_lecture_Combination_results[0])
 
         context = {
-            'lectures' : valid_lecture_Combination_results[0]
+            'group_list' : group_list
         }
         return render(request, self.template_name, context)
 
