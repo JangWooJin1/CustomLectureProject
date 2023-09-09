@@ -47,3 +47,32 @@ initializeMultiRangeSlider("slider-3");
 initializeMultiRangeSlider("slider-4");
 initializeMultiRangeSlider("slider-5");
 initializeMultiRangeSlider("slider-6");
+
+$(document).ready(function () {
+  // 첫 로드시 숨김 처리
+  $('.multi-range')
+    .find('.range-left, .range-right, .range, .thumb.left, .thumb.right, .output-left, .output-right')
+    .hide();
+
+  // 체크박스의 변경 이벤트를 감지합니다.
+  $('.multi-range-checkbox').change(function () {
+    // 체크박스의 상태를 확인합니다.
+    if (!$(this).prop('checked')) {
+      // 체크박스가 선택되지 않았을 때, 해당 multi-range 요소를 숨깁니다.
+      $(this)
+        .closest('.multi-range')
+        .find('.range-left, .range-right, .range, .thumb.left, .thumb.right, .output-left, .output-right')
+        .hide();
+    } else {
+      // 체크박스가 선택되었을 때, 해당 multi-range 요소를 표시합니다.
+      $(this)
+        .closest('.multi-range')
+        .find('.range-left, .range-right, .range, .thumb.left, .thumb.right, .output-left, .output-right')
+        .show();
+    }
+  });
+});
+
+
+
+
