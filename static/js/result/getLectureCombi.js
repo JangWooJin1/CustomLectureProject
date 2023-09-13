@@ -120,13 +120,20 @@ $(document).ready(function () {
                         }
 
                         const lectureDiv = $("<div>", {
-                            class: "lecture",
-                            style: `
+                        class: "lecture",
+                        style: `
                             top: ${lecture.lecture_start_time * 10}px;
                             left: ${lecture_day_to_px(lecture.lecture_day)}px;
                             height: ${lecture_duration(lecture.lecture_start_time, lecture.lecture_end_time) * 10}px;
                             background-color: ${lectureColor};`, // 저장된 색상 사용
-                        });
+                        "data-lecture-id": lecture.lecture_id,
+                        "data-lecture-name": lecture.lecture_name,
+                        "data-lecture-professor": lecture.lecture_professor,
+                        "data-lecture-room": lecture.lecture_room,
+                        "data-lecture-day": lecture.lecture_day,
+                        "data-lecture-start-time": lecture.lecture_start_time,
+                        "data-lecture-end-time": lecture.lecture_end_time
+                    });
 
                         timetable.append(lectureDiv);
                     }

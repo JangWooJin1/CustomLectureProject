@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
 from itertools import combinations, product
 import math
+import json
 
 appName = "appresult"
 
@@ -169,9 +170,10 @@ def calculate_all_combinations(lecture_Combination_results):
 def get_lecture_combinations(request):
     user_id = 'jang'
     campus = request.POST.get('campus')
-    time = request.POST.get('time')
-    credit = request.POST.get('credit')
-    group = request.POST.get('group')
+    time = json.loads(request.POST.get('time'))
+    credit = json.loads(request.POST.get('credit'))
+    group = json.loads(request.POST.get('group'))
+    print(list(time.keys()))
 
     lecture_list_query = f"""
     SELECT
@@ -202,20 +204,20 @@ def get_lecture_combinations(request):
         lecture_list_query += " AND li.lecture_campus = %s"
         lecture_list_query_params.append(campus)
 
-    if time is not None:
-        lecture_list_query += """ AND li.lecture_id NOT IN (
-            SELECT 
-                sli.lecture_id
-            FROM 
-                appsearch_lectureItem AS sli
-            INNER JOIN
-                appsearch_lectureItemSchedule AS sls ON sli.lecture_id = sls.lecture_id_id
-            WHERE
-                sls.lecture_day
-            
-        
-        )
-        """
+    # if time is not None:
+    #     day = list(time.keys())
+    #     lecture_list_query += f""" AND li.lecture_id NOT IN (
+    #         SELECT
+    #             sli.lecture_id
+    #         FROM
+    #             appsearch_lectureItem AS sli
+    #         INNER JOIN
+    #             appsearch_lectureItemSchedule AS sls ON sli.lecture_id = sls.lecture_id_id
+    #         WHERE
+    #             sls.lecture_day IN (%s) AND sls
+    #     )
+    #     """
+    #     lecture_list_query_params.append(day)
 
     lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
 

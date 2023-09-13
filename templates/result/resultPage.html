@@ -191,7 +191,20 @@
         <div class="view-section">
             <div class="calculateCombination"></div>
             <div class="TimeTableBox"></div>
-            <div class="DetailTimeTableBox"></div>
+            <div class="DetailTimeTableBox">
+                <div class="table-container">
+                    <table id="detail-table">
+                        <tr class="row-first">
+                            <th class="column-first"></th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -202,5 +215,6 @@
 <script src="{% static 'js/result/getLectureCombi.js' %}"></script>
 <script src="{% static 'js/result/multiRangeSlider.js' %}"></script>
 <script src="{% static 'js/result/filterSelectGroup.js' %}"></script>
+<script src="{% static 'js/result/detailLectureCombi.js' %}"></script>
 </body>
 </html>
