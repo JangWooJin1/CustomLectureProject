@@ -86,14 +86,10 @@ $(document).ready(function () {
             const nameDiv = `<div class="name">${lectureName}</div>`;
             const roomDiv = `<div class="room">${room}</div>`;
             const professorDiv = `<div class="professor">${professor}</div>`;
-            const testDiv = `<div>${lecture_startTime}</div>`;
-            const test2Div = `<div>${lecture_endTime}</div>`;
 
             lectureDiv.append(nameDiv);
             lectureDiv.append(roomDiv);
             lectureDiv.append(professorDiv);
-            lectureDiv.append(testDiv);
-            lectureDiv.append(test2Div);
 
             tableBox.append(lectureDiv);
 
@@ -106,15 +102,15 @@ $(document).ready(function () {
 
 function detail_lecture_day_to_px(lecture_day) {
     var days = ['월', '화', '수', '목', '금'];
-    var space = 40;
-    var width = 150;
+    var space = 42.5;
+    var width = 123;
 
     return days.indexOf(lecture_day) * width + space;
 }
 
 function detail_lecture_time_to_px(lecture_startTime, table_startTime) {
     var space = 30;
-    var hourHeight = 80;
+    var hourHeight = 60;
     var minuteHeight = hourHeight / 60; // 1분에 해당하는 픽셀 높이
     var startTimeDifference = lecture_startTime - table_startTime; // 시작 시간 차이 (분)
 
@@ -125,9 +121,9 @@ function detail_lecture_time_to_px(lecture_startTime, table_startTime) {
 }
 
 function detail_lecture_time_to_height(lecture_startTime, lecture_endTime) {
-    var hourHeight = 80;
+    var hourHeight = 60;
     var minuteHeight = hourHeight / 60; // 1분에 해당하는 픽셀 높이
-    var durationMinutes = lecture_endTime - lecture_startTime + 60; // 수업 기간 (분)
+    var durationMinutes = lecture_endTime - lecture_startTime; // 수업 기간 (분)
 
     // 수업 기간에 따른 높이 계산
     var height = durationMinutes * minuteHeight;

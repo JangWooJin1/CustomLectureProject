@@ -288,9 +288,12 @@ def add_user_timetable(request):
     read_query = """
     SELECT MAX(class_num) AS max_num
     FROM appresult_mytimetable
+    WHERE user_id_id = %s
     """
 
-    max_num_dict = execute_raw_sql_query(read_query)
+    read_params = [user_id]
+
+    max_num_dict = execute_raw_sql_query(read_query, read_params)
     max_num = max_num_dict[0]['max_num'] + 1
 
     insert_query = """

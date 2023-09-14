@@ -95,40 +95,6 @@ input[type="range"]::-webkit-slider-thumb {
 }
 /*양뱡향 input range*/
 
-/*미니 시간표*/
-.TimeTableBox {
-    display: flex;
-    height: auto;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    overflow-x: auto;
-
-
-}
-
-.TimeTableBox div {
-    margin-right: 20px;
-}
-
-.TimeTable {
-    position: relative;
-    min-width: 100px; /* 최소 너비를 지정하여 고정같이 보이도록 함 */
-    width: 100px; /* 고정된 너비를 지정 */
-    height: 90px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.lecture {
-    position: absolute;
-    background-color: #3498db;
-    width: 20px;
-    border: none;
-}
-/*미니 시간표*/
-
 .main {
     display: flex;
     flex-direction: row;
@@ -159,13 +125,63 @@ input[type="range"]::-webkit-slider-thumb {
 
 .view-section {
     display: flex;
-    flex-direction: column;
-    width: 1000px;
+    flex-direction: row;
 }
 
 .view-section > div {
-    margin-bottom: 30px;
+    margin-right: 30px;
 }
+
+.view-section-head{
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 130px;
+}
+
+.calculateCombination{
+    font-size:12px;
+    margin-bottom: 10px;
+}
+
+/*미니 시간표*/
+.TimeTableBox {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+}
+
+.TimeTableBox div {
+    margin-bottom: 20px;
+}
+
+.TimeTable {
+    position: relative;
+    min-width: 100px; /* 최소 너비를 지정하여 고정같이 보이도록 함 */
+    width: 100px; /* 고정된 너비를 지정 */
+    height: 90px;
+    min-height: 90px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.lecture {
+    position: absolute;
+    background-color: #3498db;
+    width: 20px;
+    border: none;
+}
+
+.timetable-num{
+    margin-left: 5px;
+    font-size: 11px;
+    z-index: 99;
+}
+/*미니 시간표*/
 
 .DetailTimeTable {
     position: relative;
@@ -195,16 +211,16 @@ table {
 }
 
 th {
-    width: 150px;
-    max-width: 150px;
+    width: 120px;
+    max-width: 120px;
     height: 30px;
     border: 1px solid #ccc;
 }
 
 td {
-    width: 150px;
-    max-width: 150px;
-    height: 80px;
+    width: 120px;
+    max-width: 120px;
+    height: 60px;
     border: 1px solid #ccc;
 }
 
@@ -220,10 +236,26 @@ td {
 .detail-lecture {
     position: absolute;
     background-color: #3498db;
-    width: 150px;
+    width: 123px;
     border: none;
     z-index: 99;
 
     display: flex;
     flex-direction: column;
 }
+
+.detail-lecture > .name{
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.detail-lecture > .room{
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.detail-lecture > .professor{
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
