@@ -173,7 +173,6 @@ def get_lecture_combinations(request):
     time = json.loads(request.POST.get('time'))
     credit = json.loads(request.POST.get('credit'))
     group = json.loads(request.POST.get('group'))
-    print(list(time.keys()))
 
     lecture_list_query = f"""
     SELECT
@@ -204,20 +203,30 @@ def get_lecture_combinations(request):
         lecture_list_query += " AND li.lecture_campus = %s"
         lecture_list_query_params.append(campus)
 
-    # if time is not None:
-    #     day = list(time.keys())
-    #     lecture_list_query += f""" AND li.lecture_id NOT IN (
-    #         SELECT
-    #             sli.lecture_id
-    #         FROM
-    #             appsearch_lectureItem AS sli
-    #         INNER JOIN
-    #             appsearch_lectureItemSchedule AS sls ON sli.lecture_id = sls.lecture_id_id
-    #         WHERE
-    #             sls.lecture_day IN (%s) AND sls
-    #     )
-    #     """
-    #     lecture_list_query_params.append(day)
+    if time is not None:
+        lecture_list_query += " AND NOT ("
+        conditions = []
+        for day, time_range in time.items():
+            start_time = float(time_range['start'])
+            if (start_time <= 18):
+                start_time -= 8
+            else:
+                start_time -= 7.5
+
+            end_time = float(time_range['end'])
+            if (end_time <= 18):
+                end_time -= 8.5
+            else:
+                end_time -= 8
+
+            condition = "(ls.lecture_day = %s AND (ls.lecture_start_time >= %s OR ls.lecture_end_time <= %s))\n"
+            conditions.append(condition)
+            lecture_list_query_params.append(day)
+            lecture_list_query_params.append(start_time)
+            lecture_list_query_params.append(end_time)
+
+        lecture_list_query += " OR ".join(conditions)
+        lecture_list_query += ")"
 
     lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
 
