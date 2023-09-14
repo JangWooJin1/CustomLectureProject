@@ -80,23 +80,23 @@ $(document).ready(function () {
                     top: ${detail_lecture_time_to_px(startMinutes, table_startTime)}px;
                     left: ${detail_lecture_day_to_px(day)}px;
                     height: ${detail_lecture_time_to_height(startMinutes, endMinutes)}px;
-                    background-color: ${background_color};
-                    `
+                    background-color: ${background_color};`,
+                "data-lecture-id": lectureId
             });
             const nameDiv = `<div class="name">${lectureName}</div>`;
             const roomDiv = `<div class="room">${room}</div>`;
             const professorDiv = `<div class="professor">${professor}</div>`;
+            const testDiv = `<div>${lecture_startTime}</div>`;
+            const test2Div = `<div>${lecture_endTime}</div>`;
 
             lectureDiv.append(nameDiv);
             lectureDiv.append(roomDiv);
             lectureDiv.append(professorDiv);
+            lectureDiv.append(testDiv);
+            lectureDiv.append(test2Div);
 
             tableBox.append(lectureDiv);
 
-
-            console.log("강의 요일 : " + detail_lecture_day_to_px(day));
-            console.log("강의 시작 : "+ lecture_startTime);
-            console.log("강의 종료 : "+ lecture_endTime);
 
         });
 

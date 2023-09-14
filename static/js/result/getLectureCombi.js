@@ -105,6 +105,13 @@ $(document).ready(function () {
                     const timetable = $("<div>", {
                         class: "timetable"
                     });
+
+                    const timetableNum = $("<div>", {
+                        class: "timetable-num",
+                        text: i + 1
+                    });
+
+                    timetable.append(timetableNum);
                     $(".TimeTableBox").append(timetable);
 
                     for (let j = 0; j < lectures.length; j++) {

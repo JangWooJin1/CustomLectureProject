@@ -192,6 +192,9 @@
             <div class="calculateCombination"></div>
             <div class="TimeTableBox"></div>
             <div class="DetailTimeTableBox">
+                <div class="add-button-box">
+                    <button id="addButton" type="button">저장</button>
+                </div>
                 <div class="table-container">
                     <table id="detail-table">
                         <tr class="row-first">
@@ -210,11 +213,13 @@
 
 <script>
     var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
+    var add_user_timetable = "{% url 'result:add_user_timetable' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/result/getLectureCombi.js' %}"></script>
 <script src="{% static 'js/result/multiRangeSlider.js' %}"></script>
 <script src="{% static 'js/result/filterSelectGroup.js' %}"></script>
 <script src="{% static 'js/result/detailLectureCombi.js' %}"></script>
+<script src="{% static 'js/result/addUserTimetable.js' %}"></script>
 </body>
 </html>

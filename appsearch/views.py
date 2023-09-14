@@ -45,7 +45,7 @@ class Search(View):
         search_value_list = ["lecture_name", "lecture_code", "lecture_professor"]
         search_zip_list = zip(search_value_list, search_label_list)
 
-        user_id = 'jang'
+        user_id = request.session.get('user_id')
         userbasket_group_list = get_userbasket_group(user_id)
 
         context = {
@@ -262,7 +262,7 @@ def get_userbasket_item(user_id, lecture_code, lecture_number=None):
 
 @csrf_exempt
 def get_userbasket_items(request):
-    user_id = 'jang'
+    user_id = request.session.get('user_id')
     lecture_code = request.POST.get('lecture_code')
 
     basket_items = get_userbasket_item(user_id, lecture_code)
@@ -271,7 +271,7 @@ def get_userbasket_items(request):
 
 @csrf_exempt
 def add_userbasket(request):
-    user_id = 'jang'
+    user_id = request.session.get('user_id')
     lecture_code = request.POST.get('lecture_code')
     lecture_number = request.POST.get('lecture_number')
     lecture_campus = request.POST.get('campus')
@@ -308,7 +308,7 @@ def add_userbasket(request):
 
 @csrf_exempt
 def delete_userbasket(request):
-    user_id = 'jang'
+    user_id = request.session.get('user_id')
     lecture_code = request.POST.get('lecture_code')
     lecture_number = request.POST.get('lecture_number')
 
