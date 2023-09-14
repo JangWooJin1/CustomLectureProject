@@ -37,7 +37,7 @@ def generate_group_combinations(groups):
     return result
 
 # myLecture와 allTimeTable를 형성하는 함수
-def getGroupCombinations(basket_dict):
+def getGroupCombinations(basket_dict, group_credit_info_dict, credit_dict, required_group_list):
     basket_group_list = basket_dict.keys()
 
     # nCr에서 n값 구하기
@@ -58,11 +58,23 @@ def getGroupCombinations(basket_dict):
 
     group_combinations = []
     # 생성된 그룹 조합에서 모든 강의 조합 보기
+    min_credit = 3
+    max_credit = 24
+
+    if credit_dict:
+        min_credit = int(credit_dict['전체']['min'])
+        max_credit = int(credit_dict['전체']['max'])
+
     for combination in combination_group_list:
-        groups = []
-        for group in combination:
-            groups.append(basket_dict[group])
-        group_combinations.append(groups)
+        if all(item in combination for item in required_group_list):
+            groups = []
+            groups_credit = 0
+            for group in combination:
+                groups.append(basket_dict[group])
+                groups_credit += group_credit_info_dict[group]
+
+            if (groups_credit >= min_credit and groups_credit <= max_credit):
+                group_combinations.append(groups)
 
     return group_combinations
 
@@ -173,12 +185,14 @@ def get_lecture_combinations(request):
     time = json.loads(request.POST.get('time'))
     credit = json.loads(request.POST.get('credit'))
     group = json.loads(request.POST.get('group'))
+    print(group)
 
     lecture_list_query = f"""
     SELECT
         li.lecture_id,
         li.lecture_code_id,
         lg.lecture_name,
+        lg.lecture_credit,
         li.lecture_professor,
         ls.lecture_room,
         ls.lecture_day,
@@ -232,6 +246,8 @@ def get_lecture_combinations(request):
 
     basket_dict = {}
 
+    group_credit_info_dict = {}
+
     for item in lecture_list:
         lecture_id = item['lecture_id']
         lecture_code_id = item['lecture_code_id']
@@ -239,13 +255,16 @@ def get_lecture_combinations(request):
         if lecture_code_id not in basket_dict:
             basket_dict[lecture_code_id] = []
 
+        if lecture_code_id not in group_credit_info_dict:
+            group_credit_info_dict[lecture_code_id] = item['lecture_credit']
+
         if lecture_id not in basket_dict[lecture_code_id]:
             basket_dict[lecture_code_id].append(lecture_id)
 
     count_group_combinations = calculate_group_combinations(basket_dict)
     print(count_group_combinations)
     #@@@@@@@@그룹 조합 결과가 많으면 뒤의 알고리즘 종료 구현
-    group_combinations= getGroupCombinations(basket_dict)
+    group_combinations= getGroupCombinations(basket_dict, group_credit_info_dict, credit, group)
 
     count_all_combinations = calculate_all_combinations(group_combinations)
     print(count_all_combinations)
