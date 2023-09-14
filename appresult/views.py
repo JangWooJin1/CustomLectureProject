@@ -118,7 +118,7 @@ class Result(View):
     template_name = 'resultPage.html'
 
     def get(self, request):
-        user_id = 'jang'
+        user_id = request.session.get('user_id')
 
         group_list_query = f"""
         SELECT DISTINCT
@@ -180,12 +180,11 @@ def calculate_all_combinations(lecture_Combination_results):
 
 @csrf_exempt
 def get_lecture_combinations(request):
-    user_id = 'jang'
+    user_id = request.session.get('user_id')
     campus = request.POST.get('campus')
     time = json.loads(request.POST.get('time'))
     credit = json.loads(request.POST.get('credit'))
     group = json.loads(request.POST.get('group'))
-    print(group)
 
     lecture_list_query = f"""
     SELECT
@@ -217,7 +216,7 @@ def get_lecture_combinations(request):
         lecture_list_query += " AND li.lecture_campus = %s"
         lecture_list_query_params.append(campus)
 
-    if time is not None:
+    if time:
         lecture_list_query += " AND NOT ("
         conditions = []
         for day, time_range in time.items():
@@ -279,3 +278,33 @@ def get_lecture_combinations(request):
     }
 
     return JsonResponse(datas, safe=False)
+
+@csrf_exempt
+def add_user_timetable(request):
+    lectures = list(json.loads(request.POST.get('lectures')))
+
+    user_id = request.session.get('user_id')
+
+    read_query = """
+    SELECT MAX(class_num) AS max_num
+    FROM appresult_mytimetable
+    """
+
+    max_num_dict = execute_raw_sql_query(read_query)
+    max_num = max_num_dict[0]['max_num'] + 1
+
+    insert_query = """
+    INSERT INTO appresult_mytimetable(class_num, lecture_id_id, user_id_id)
+    SELECT %s, lecture_id, %s
+    FROM appsearch_lectureItem as li
+    WHERE li.lecture_id IN %s
+    """
+    insert_params = [max_num, user_id, lectures]
+
+    execute_raw_sql_query(insert_query, insert_params)
+
+    data = {
+        'success' : '강의 추가 성공'
+    }
+
+    return JsonResponse(data, safe=False)
