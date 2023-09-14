@@ -217,7 +217,15 @@ def get_lecture_combinations(request):
         lecture_list_query_params.append(campus)
 
     if time:
-        lecture_list_query += " AND NOT ("
+        lecture_list_query += """ AND li.lecture_id NOT IN (
+            SELECT DISTINCT
+                sls.lecture_id_id
+            FROM 
+                appsearch_lectureItemSchedule AS sls
+            WHERE 
+                (
+        """
+
         conditions = []
         for day, time_range in time.items():
             start_time = float(time_range['start'])
@@ -232,14 +240,17 @@ def get_lecture_combinations(request):
             else:
                 end_time -= 8
 
-            condition = "(ls.lecture_day = %s AND (ls.lecture_start_time >= %s OR ls.lecture_end_time <= %s))\n"
+            condition = "(sls.lecture_day = %s AND (sls.lecture_start_time <= %s AND sls.lecture_end_time >= %s))\n"
             conditions.append(condition)
             lecture_list_query_params.append(day)
-            lecture_list_query_params.append(start_time)
             lecture_list_query_params.append(end_time)
+            lecture_list_query_params.append(start_time)
+
 
         lecture_list_query += " OR ".join(conditions)
-        lecture_list_query += ")"
+        lecture_list_query += "))"
+
+    print(lecture_list_query)
 
     lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
 
