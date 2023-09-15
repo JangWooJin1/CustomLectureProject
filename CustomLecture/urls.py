@@ -24,4 +24,5 @@ urlpatterns = [
     path('account/', include('appaccount.urls')),
     path('search/', include('appsearch.urls')),
     path('result/', include('appresult.urls')),
+    path('mypage/', include('appmypage.urls')),
 ]
