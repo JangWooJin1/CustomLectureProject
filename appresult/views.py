@@ -250,7 +250,6 @@ def get_lecture_combinations(request):
         lecture_list_query += " OR ".join(conditions)
         lecture_list_query += "))"
 
-    print(lecture_list_query)
 
     lecture_list = execute_raw_sql_query(lecture_list_query, lecture_list_query_params)
 

@@ -1,10 +1,57 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+    <title>mypage</title>
 </head>
 <body>
-<p>hello</p>
+    <div class="main">
+        <div class="filter-section">
+            {% for key, timetable in timetable_dict.items %}
+              <div class="timetable_info" id="timetable-{{ key }}">
+                  <div>{{ forloop.counter }}번 시간표</div>
+                  <button class="delete_timetable" type="button">제거</button>
+                  <div class="timetable" style="display: none;">
+                    {% for lecture in timetable %}
+                        <div class="lecture"
+                             data-lecture-id="{{ lecture.lecture_id }}"
+                             data-lecture-name="{{ lecture.lecture_name }}"
+                             data-lecture-professor="{{ lecture.lecture_professor }}"
+                             data-lecture-room="{{ lecture.lecture_room }}"
+                             data-lecture-day="{{ lecture.lecture_day }}"
+                             data-lecture-start-time="{{ lecture.lecture_start_time }}"
+                             data-lecture-end-time="{{ lecture.lecture_end_time }}">
+                        </div>
+                    {% endfor %}
+                  </div>
+
+              </div>
+
+            {% endfor %}
+        </div>
+        <div class="view-section">
+            <div class="DetailTimeTableBox">
+                <div class="table-container">
+                    <table id="detail-table">
+
+                    </table>
+                    {% for key, values in timetable_dict.items %}
+                        <div class></div>
+                        {% for value in values %}
+
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
+    var add_user_timetable = "{% url 'result:add_user_timetable' %}";
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/mypage/detailTimeTable.js' %}"></script>
 </body>
 </html>
