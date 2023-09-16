@@ -4,7 +4,6 @@ $(document).ready(function () {
 
         var lectures = [];
         table_container.find('.detail-lecture').each(function (){
-            console.log("시발");
             var lecture_id = $(this).data('lecture-id');
             lectures.push(lecture_id);
         });

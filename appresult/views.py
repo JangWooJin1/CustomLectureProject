@@ -304,7 +304,11 @@ def add_user_timetable(request):
     read_params = [user_id]
 
     max_num_dict = execute_raw_sql_query(read_query, read_params)
-    max_num = max_num_dict[0]['max_num'] + 1
+    print(max_num_dict)
+    if max_num_dict[0]['max_num']:
+        max_num = max_num_dict[0]['max_num'] + 1
+    else:
+        max_num = 1
 
     insert_query = """
     INSERT INTO appresult_mytimetable(class_num, lecture_id_id, user_id_id)
