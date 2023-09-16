@@ -9,9 +9,8 @@
     <div class="main">
         <div class="filter-section">
             {% for key, timetable in timetable_dict.items %}
-              <div class="timetable_info" id="timetable-{{ key }}">
+              <div class="timetable_info" id="timetable-{{ key }}"data-class-num="{{ key }}">
                   <div>{{ forloop.counter }}번 시간표</div>
-                  <button class="delete_timetable" type="button">제거</button>
                   <div class="timetable" style="display: none;">
                     {% for lecture in timetable %}
                         <div class="lecture"
@@ -27,11 +26,11 @@
                   </div>
 
               </div>
-
             {% endfor %}
         </div>
         <div class="view-section">
             <div class="DetailTimeTableBox">
+                <button id="delete_timetable" type="button" style="display: none;">제거</button>
                 <div class="table-container">
                     <table id="detail-table">
 
@@ -48,10 +47,10 @@
     </div>
 
 <script>
-    var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
-    var add_user_timetable = "{% url 'result:add_user_timetable' %}";
+    var delete_timetable_url = "{% url 'mypage:delete_timetable' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/mypage/detailTimeTable.js' %}"></script>
+<script src="{% static 'js/mypage/deleteTimeTable.js' %}"></script>
 </body>
 </html>

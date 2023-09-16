@@ -76,3 +76,21 @@ class Mypage(View):
 
     def post(self, request):
         pass
+
+
+def delete_timetable(request):
+    user_id = request.session.get('user_id')
+    class_num = request.GET.get('class_num')
+
+    delete_timetable_query = """
+        DELETE FROM appresult_mytimetable
+        WHERE user_id_id = %s AND class_num = %s
+    """
+
+    delete_timetable_params = [user_id, class_num]
+
+    execute_raw_sql_query(delete_timetable_query, delete_timetable_params)
+
+    message = {'message' : "삭제 성공"}
+
+    return JsonResponse(message, safe=False)

@@ -60,14 +60,11 @@ $(document).ready(function () {
         }
 
         table_startTime = (startMinutes < 540) ? 480 : 540; // 540 분 = 09:00
-        console.log("여기???");
+
         // 각 .lecture 요소를 순회하면서 데이터 속성 값을 추출하여 변수에 저장
         lectureElements.each(function () {
-        console.log("여기??");
             var lectureId = $(this).data('lecture-id');
-            console.log("여기??1");
             var lectureName = $(this).data('lecture-name');
-            console.log("여기?2");
             var professor = $(this).data('lecture-professor');
             var room = $(this).data('lecture-room');
             var day = $(this).data('lecture-day');
@@ -81,7 +78,6 @@ $(document).ready(function () {
                 lectureColors[lectureId] = lectureColor;
             }
 
-           console.log("여기??111");
             var [startMinutes, endMinutes] = calculateMinutes(lecture_startTime, lecture_endTime) ;
 
             var lectureDiv = $("<div>", {
@@ -103,6 +99,11 @@ $(document).ready(function () {
 
             tableBox.append(lectureDiv);
         });
+
+        var class_num = $(this).data('class-num');
+        $('#delete_timetable').data('class-num', class_num);
+        $('#delete_timetable').css('display', 'block');
+
 
 
     });

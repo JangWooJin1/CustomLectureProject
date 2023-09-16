@@ -33,6 +33,11 @@
     margin-right: 30px;
 }
 
+.DetailTimeTableBox{
+    display: flex;
+    flex-direction: column;
+}
+
 .DetailTimeTable {
     position: relative;
     border: 1px solid #ccc;
