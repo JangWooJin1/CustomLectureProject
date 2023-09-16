@@ -1,216 +1,210 @@
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/result.css' %}">
-    <title>TimeTable</title>
-</head>
-<body>
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% include "../navbar.html" %}
+<div class="main">
+    <div class="filter-section">
 
-    <div class="main">
-        <div class="filter-section">
+        <div class="filter campus">
+            <div class="filter-name">캠퍼스</div>
+            <div>
+                <label for="all">전체</label>
+                <input type="radio" id="all" name="campus" value="전체" checked>
 
-            <div class="filter campus">
-                <div class="filter-name">캠퍼스</div>
-                <div>
-                    <label for="all">전체</label>
-                    <input type="radio" id="all" name="campus" value="전체" checked>
+                <label for="seoul">서울</label>
+                <input type="radio" id="seoul" name="campus" value="서울">
 
-                    <label for="seoul">서울</label>
-                    <input type="radio" id="seoul" name="campus" value="서울">
-
-                    <label for="ilsan">일산</label>
-                    <input type="radio" id="ilsan" name="campus" value="일산">
-                </div>
+                <label for="ilsan">일산</label>
+                <input type="radio" id="ilsan" name="campus" value="일산">
             </div>
-
-            <div class="filter time">
-                <div class="filter-name">제외시간</div>
-                <div class="filter-content">
-
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-1-checkbox"></div>
-                        <div class="multi-range-label">월</div>
-                        <div id="slider-1" class="multi-range-content" >
-
-                            <div class="multi-range-slider">
-                                <input class="range-left" type="range" min="8" max="22" value="8" />
-                                <input class="range-right" type="range" min="8" max="22" value="22" />
-
-                                <div class="slider">
-                                  <div class="track"></div>
-                                  <div class="range"></div>
-                                  <div class="thumb left"></div>
-                                  <div class="thumb right"></div>
-                                </div>
-                            </div>
-                            <div class="output-value">
-                                <div class="output-left">8</div>
-                                <div class="output-right">22</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-2-checkbox"></div>
-                        <div class="multi-range-label">화</div>
-                        <div id="slider-2" class="multi-range-content">
-                          <div class="multi-range-slider">
-                            <input class="range-left" type="range" min="8" max="22" value="8" />
-                            <input class="range-right" type="range" min="8" max="22" value="22" />
-
-                            <div class="slider">
-                              <div class="track"></div>
-                              <div class="range"></div>
-                              <div class="thumb left"></div>
-                              <div class="thumb right"></div>
-                            </div>
-                          </div>
-                          <div class="output-value">
-                            <div class="output-left">8</div>
-                            <div class="output-right">22</div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-3-checkbox"></div>
-                        <div class="multi-range-label">수</div>
-                        <div id="slider-3" class="multi-range-content">
-                          <div class="multi-range-slider">
-                            <input class="range-left" type="range" min="8" max="22" value="8" />
-                            <input class="range-right" type="range" min="8" max="22" value="22" />
-
-                            <div class="slider">
-                              <div class="track"></div>
-                              <div class="range"></div>
-                              <div class="thumb left"></div>
-                              <div class="thumb right"></div>
-                            </div>
-                          </div>
-                          <div class="output-value">
-                            <div class="output-left">8</div>
-                            <div class="output-right">22</div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-4-checkbox"></div>
-                        <div class="multi-range-label">목</div>
-                        <div id="slider-4" class="multi-range-content">
-                          <div class="multi-range-slider">
-                            <input class="range-left" type="range" min="8" max="22" value="8" />
-                            <input class="range-right" type="range" min="8" max="22" value="22" />
-
-                            <div class="slider">
-                              <div class="track"></div>
-                              <div class="range"></div>
-                              <div class="thumb left"></div>
-                              <div class="thumb right"></div>
-                            </div>
-                          </div>
-                          <div class="output-value">
-                            <div class="output-left">8</div>
-                            <div class="output-right">22</div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-5-checkbox"></div>
-                        <div class="multi-range-label">금</div>
-                        <div id="slider-5" class="multi-range-content">
-                          <div class="multi-range-slider">
-                            <input class="range-left" type="range" min="8" max="22" value="8" />
-                            <input class="range-right" type="range" min="8" max="22" value="22" />
-
-                            <div class="slider">
-                              <div class="track"></div>
-                              <div class="range"></div>
-                              <div class="thumb left"></div>
-                              <div class="thumb right"></div>
-                            </div>
-                          </div>
-                          <div class="output-value">
-                            <div class="output-left">8</div>
-                            <div class="output-right">22</div>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter credit">
-                <div class="filter-name">학점</div>
-                <div class="filter-content">
-                    <div class="multi-range">
-                        <div><input type="checkbox" class="multi-range-checkbox" id="slider-6-checkbox"></div>
-                        <div class="multi-range-label">전체</div>
-                        <div id="slider-6" class="multi-range-content">
-                          <div class="multi-range-slider">
-                            <input class="range-left" type="range" min="3" max="24" value="3" />
-                            <input class="range-right" type="range" min="8" max="24" value="24" />
-
-                            <div class="slider">
-                              <div class="track"></div>
-                              <div class="range"></div>
-                              <div class="thumb left"></div>
-                              <div class="thumb right"></div>
-                            </div>
-                          </div>
-                          <div class="output-value">
-                            <div class="output-left">3</div>
-                            <div class="output-right">24</div>
-                          </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter select-group">
-                <div class="filter-name">포함강의</div>
-                <div class="filter-content">
-                    <div>
-                        <select id="select-group">
-                            {% for group in group_list %}
-                                <option value="{{ group.lecture_code }}">{{ group.lecture_name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button id="select-group-button" type="button">+</button>
-                    </div>
-                    <div id="selected-groups">
-                    </div>
-                </div>
-            </div>
-
-            <button id="submitButton" type="button">조회</button>
         </div>
 
-        <div class="view-section">
-            <div class="view-section-head">
-                <div class="calculateCombination"></div>
-                <div class="TimeTableBox"></div>
+        <div class="filter time">
+            <div class="filter-name">제외시간</div>
+            <div class="filter-content">
+
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-1-checkbox"></div>
+                    <div class="multi-range-label">월</div>
+                    <div id="slider-1" class="multi-range-content" >
+
+                        <div class="multi-range-slider">
+                            <input class="range-left" type="range" min="8" max="22" value="8" />
+                            <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                            <div class="slider">
+                              <div class="track"></div>
+                              <div class="range"></div>
+                              <div class="thumb left"></div>
+                              <div class="thumb right"></div>
+                            </div>
+                        </div>
+                        <div class="output-value">
+                            <div class="output-left">8</div>
+                            <div class="output-right">22</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-2-checkbox"></div>
+                    <div class="multi-range-label">화</div>
+                    <div id="slider-2" class="multi-range-content">
+                      <div class="multi-range-slider">
+                        <input class="range-left" type="range" min="8" max="22" value="8" />
+                        <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                        <div class="slider">
+                          <div class="track"></div>
+                          <div class="range"></div>
+                          <div class="thumb left"></div>
+                          <div class="thumb right"></div>
+                        </div>
+                      </div>
+                      <div class="output-value">
+                        <div class="output-left">8</div>
+                        <div class="output-right">22</div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-3-checkbox"></div>
+                    <div class="multi-range-label">수</div>
+                    <div id="slider-3" class="multi-range-content">
+                      <div class="multi-range-slider">
+                        <input class="range-left" type="range" min="8" max="22" value="8" />
+                        <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                        <div class="slider">
+                          <div class="track"></div>
+                          <div class="range"></div>
+                          <div class="thumb left"></div>
+                          <div class="thumb right"></div>
+                        </div>
+                      </div>
+                      <div class="output-value">
+                        <div class="output-left">8</div>
+                        <div class="output-right">22</div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-4-checkbox"></div>
+                    <div class="multi-range-label">목</div>
+                    <div id="slider-4" class="multi-range-content">
+                      <div class="multi-range-slider">
+                        <input class="range-left" type="range" min="8" max="22" value="8" />
+                        <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                        <div class="slider">
+                          <div class="track"></div>
+                          <div class="range"></div>
+                          <div class="thumb left"></div>
+                          <div class="thumb right"></div>
+                        </div>
+                      </div>
+                      <div class="output-value">
+                        <div class="output-left">8</div>
+                        <div class="output-right">22</div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-5-checkbox"></div>
+                    <div class="multi-range-label">금</div>
+                    <div id="slider-5" class="multi-range-content">
+                      <div class="multi-range-slider">
+                        <input class="range-left" type="range" min="8" max="22" value="8" />
+                        <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                        <div class="slider">
+                          <div class="track"></div>
+                          <div class="range"></div>
+                          <div class="thumb left"></div>
+                          <div class="thumb right"></div>
+                        </div>
+                      </div>
+                      <div class="output-value">
+                        <div class="output-left">8</div>
+                        <div class="output-right">22</div>
+                      </div>
+                    </div>
+                </div>
             </div>
-            <div class="DetailTimeTableBox">
-                <div class="add-button-box">
-                    <button id="addButton" type="button">저장</button>
+        </div>
+
+        <div class="filter credit">
+            <div class="filter-name">학점</div>
+            <div class="filter-content">
+                <div class="multi-range">
+                    <div><input type="checkbox" class="multi-range-checkbox" id="slider-6-checkbox"></div>
+                    <div class="multi-range-label">전체</div>
+                    <div id="slider-6" class="multi-range-content">
+                      <div class="multi-range-slider">
+                        <input class="range-left" type="range" min="3" max="24" value="3" />
+                        <input class="range-right" type="range" min="8" max="24" value="24" />
+
+                        <div class="slider">
+                          <div class="track"></div>
+                          <div class="range"></div>
+                          <div class="thumb left"></div>
+                          <div class="thumb right"></div>
+                        </div>
+                      </div>
+                      <div class="output-value">
+                        <div class="output-left">3</div>
+                        <div class="output-right">24</div>
+                      </div>
+                    </div>
                 </div>
-                <div class="table-container">
-                    <table id="detail-table">
-                        <tr class="row-first">
-                            <th class="column-first"></th>
-                            <th>월</th>
-                            <th>화</th>
-                            <th>수</th>
-                            <th>목</th>
-                            <th>금</th>
-                        </tr>
-                    </table>
+            </div>
+        </div>
+
+        <div class="filter select-group">
+            <div class="filter-name">포함강의</div>
+            <div class="filter-content">
+                <div>
+                    <select id="select-group">
+                        {% for group in group_list %}
+                            <option value="{{ group.lecture_code }}">{{ group.lecture_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="select-group-button" type="button">+</button>
                 </div>
+                <div id="selected-groups">
+                </div>
+            </div>
+        </div>
+
+        <button id="submitButton" type="button">조회</button>
+    </div>
+
+    <div class="view-section">
+        <div class="view-section-head">
+            <div class="calculateCombination"></div>
+            <div class="TimeTableBox"></div>
+        </div>
+        <div class="DetailTimeTableBox">
+            <div class="add-button-box">
+                <button id="addButton" type="button">저장</button>
+            </div>
+            <div class="table-container">
+                <table id="detail-table">
+                    <tr class="row-first">
+                        <th class="column-first"></th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
 <script>
     var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
@@ -222,5 +216,3 @@
 <script src="{% static 'js/result/filterSelectGroup.js' %}"></script>
 <script src="{% static 'js/result/detailLectureCombi.js' %}"></script>
 <script src="{% static 'js/result/addUserTimetable.js' %}"></script>
-</body>
-</html>

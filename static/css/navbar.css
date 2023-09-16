@@ -1,0 +1,21 @@
+.navbar {
+    background-color: #333; /* 배경색 설정 */
+    overflow: hidden;
+}
+
+.navbar-item {
+    float: left;
+}
+
+.navbar-link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* 링크 호버 효과 */
+.navbar-link:hover {
+    background-color: #555; /* 호버 시 배경색 변경 */
+}

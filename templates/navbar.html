@@ -1,31 +1,10 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
 
-<!-- 네비게이션바 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'search:search' %}">MainPage</a>
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    {% if user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'account:logout' %}">{{ user.username }} (로그아웃)</a>
-                    {% else %}
-                    <a class="nav-link" href="{% url 'account:login' %}">로그인</a>
-                    {% endif %}
-                </li>
-                <li>
-                    {% if not user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'account:signup' %}">회원가입</a>
-                    {% endif %}
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div class="navbar">
+    <div class="navbar-item"><a href="{% url 'account:signup' %}" class="navbar-link">회원가입</a></div>
+    <div class="navbar-item"><a href="{% url 'account:login' %}" class="navbar-link">로그인</a></div>
+    <div class="navbar-item"><a href="{% url 'search:search' %}" class="navbar-link">강의조회</a></div>
+    <div class="navbar-item"><a href="{% url 'result:result' %}" class="navbar-link">강의조합</a></div>
+    <div class="navbar-item"><a href="{% url 'mypage:mypage' %}" class="navbar-link">마이페이지</a></div>
+</div>

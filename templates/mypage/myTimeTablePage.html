@@ -1,50 +1,45 @@
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
-    <title>mypage</title>
-</head>
-<body>
-    <div class="main">
-        <div class="filter-section">
-            {% for key, timetable in timetable_dict.items %}
-              <div class="timetable_info" id="timetable-{{ key }}"data-class-num="{{ key }}">
-                  <div>{{ forloop.counter }}번 시간표</div>
-                  <div class="timetable" style="display: none;">
-                    {% for lecture in timetable %}
-                        <div class="lecture"
-                             data-lecture-id="{{ lecture.lecture_id }}"
-                             data-lecture-name="{{ lecture.lecture_name }}"
-                             data-lecture-professor="{{ lecture.lecture_professor }}"
-                             data-lecture-room="{{ lecture.lecture_room }}"
-                             data-lecture-day="{{ lecture.lecture_day }}"
-                             data-lecture-start-time="{{ lecture.lecture_start_time }}"
-                             data-lecture-end-time="{{ lecture.lecture_end_time }}">
-                        </div>
-                    {% endfor %}
-                  </div>
-
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+{% include "../navbar.html" %}
+<div class="main">
+    <div class="filter-section">
+        {% for key, timetable in timetable_dict.items %}
+          <div class="timetable_info" id="timetable-{{ key }}"data-class-num="{{ key }}">
+              <div>{{ forloop.counter }}번 시간표</div>
+              <div class="timetable" style="display: none;">
+                {% for lecture in timetable %}
+                    <div class="lecture"
+                         data-lecture-id="{{ lecture.lecture_id }}"
+                         data-lecture-name="{{ lecture.lecture_name }}"
+                         data-lecture-professor="{{ lecture.lecture_professor }}"
+                         data-lecture-room="{{ lecture.lecture_room }}"
+                         data-lecture-day="{{ lecture.lecture_day }}"
+                         data-lecture-start-time="{{ lecture.lecture_start_time }}"
+                         data-lecture-end-time="{{ lecture.lecture_end_time }}">
+                    </div>
+                {% endfor %}
               </div>
-            {% endfor %}
-        </div>
-        <div class="view-section">
-            <div class="DetailTimeTableBox">
-                <button id="delete_timetable" type="button" style="display: none;">제거</button>
-                <div class="table-container">
-                    <table id="detail-table">
 
-                    </table>
-                    {% for key, values in timetable_dict.items %}
-                        <div class></div>
-                        {% for value in values %}
+          </div>
+        {% endfor %}
+    </div>
+    <div class="view-section">
+        <div class="DetailTimeTableBox">
+            <button id="delete_timetable" type="button" style="display: none;">제거</button>
+            <div class="table-container">
+                <table id="detail-table">
 
-                        {% endfor %}
+                </table>
+                {% for key, values in timetable_dict.items %}
+                    <div class></div>
+                    {% for value in values %}
+
                     {% endfor %}
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
+</div>
 
 <script>
     var delete_timetable_url = "{% url 'mypage:delete_timetable' %}";
@@ -52,5 +47,3 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/mypage/detailTimeTable.js' %}"></script>
 <script src="{% static 'js/mypage/deleteTimeTable.js' %}"></script>
-</body>
-</html>
