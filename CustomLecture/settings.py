@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'appsearch.apps.AppsearchConfig',
     'appresult.apps.AppresultConfig',
     'appmypage.apps.AppmypageConfig',
+    'approomfinder.apps.ApproomfinderConfig',
 ]
 
 MIDDLEWARE = [

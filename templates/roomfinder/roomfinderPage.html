@@ -1,0 +1,71 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% include "../navbar.html" %}
+<div class="main">
+    <div class="filter-section">
+        <div class="filter time">
+            <div class="filter-name">시간대 선택</div>
+            <div class="filter-content">
+
+                <div class="multi-range">
+                    <div class="multi-range-label">
+                        <select class="select-day">
+                            <option value="월">월</option>
+                            <option value="화">화</option>
+                            <option value="수">수</option>
+                            <option value="목">목</option>
+                            <option value="금">금</option>
+                        </select>
+                    </div>
+                    <div id="slider-1" class="multi-range-content" >
+
+                        <div class="multi-range-slider">
+                            <input class="range-left" type="range" min="8" max="22" value="8" />
+                            <input class="range-right" type="range" min="8" max="22" value="22" />
+
+                            <div class="slider">
+                              <div class="track"></div>
+                              <div class="range"></div>
+                              <div class="thumb left"></div>
+                              <div class="thumb right"></div>
+                            </div>
+                        </div>
+                        <div class="output-value">
+                            <div class="output-left">8</div>
+                            <div class="output-right">22</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter building">
+            <div class="filter-name">건물선택</div>
+            <div class="filter-content">
+                <div>
+                    <select id="building">
+                        {% for building in building_list %}
+                            <option value="{{ building.code }}">{{ building.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <button id="submitButton" type="button">조회</button>
+    </div>
+
+    <div class="view-section">
+        <div class="view-section-head">
+            <div class="calculateCombination"></div>
+            <div class="TimeTableBox"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
+    var add_user_timetable = "{% url 'result:add_user_timetable' %}";
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/result/multiRangeSlider.js' %}"></script>
