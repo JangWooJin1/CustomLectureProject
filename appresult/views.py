@@ -118,7 +118,7 @@ class Result(View):
     template_name = 'resultPage.html'
 
     def get(self, request):
-        user_id = request.session.get('user_id')
+        user_id = request.session.get('_auth_user_id')
 
         group_list_query = f"""
         SELECT DISTINCT
@@ -180,7 +180,7 @@ def calculate_all_combinations(lecture_Combination_results):
 
 @csrf_exempt
 def get_lecture_combinations(request):
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('_auth_user_id')
     campus = request.POST.get('campus')
     time = json.loads(request.POST.get('time'))
     credit = json.loads(request.POST.get('credit'))
@@ -293,7 +293,7 @@ def get_lecture_combinations(request):
 def add_user_timetable(request):
     lectures = list(json.loads(request.POST.get('lectures')))
 
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('_auth_user_id')
 
     read_query = """
     SELECT MAX(class_num) AS max_num

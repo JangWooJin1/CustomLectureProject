@@ -1,9 +1,14 @@
-{% extends "base.html" %}
+{% load socialaccount %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+{% include "../navbar.html" %}
 {% block content %}
 <div class="container my-3">
+    <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'google' %}">
+	    <i class="fa-brands fa-google"></i> Log in with Google
+    </a>
     <form method="post" action="{% url 'account:login' %}">
         {% csrf_token %}
-        {% include "form_errors.html" %}
         <div class="mb-3">
             <label for="username">사용자ID</label>
             <input type="text" class="form-control" name="username" id="username"

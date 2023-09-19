@@ -21,6 +21,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='tempPage.html'), name='home'),
     path('admin/', admin.site.urls),
     path('account/', include('appaccount.urls')),
+    path('accounts/', include('allauth.urls')),
     path('search/', include('appsearch.urls')),
     path('result/', include('appresult.urls')),
     path('mypage/', include('appmypage.urls')),

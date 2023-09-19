@@ -1,4 +1,6 @@
-{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+{% include "../navbar.html" %}
 {% block content %}
 <div class="container my-3">
    <form method="post">

@@ -9,7 +9,7 @@
 
                 <div class="multi-range">
                     <div class="multi-range-label">
-                        <select class="select-day">
+                        <select id="select-day">
                             <option value="월">월</option>
                             <option value="화">화</option>
                             <option value="수">수</option>
@@ -43,7 +43,7 @@
             <div class="filter-name">건물선택</div>
             <div class="filter-content">
                 <div>
-                    <select id="building">
+                    <select id="select-building">
                         {% for building in building_list %}
                             <option value="{{ building.code }}">{{ building.name }}</option>
                         {% endfor %}
@@ -64,8 +64,7 @@
 </div>
 
 <script>
-    var get_lecture_combinations = "{% url 'result:get_lecture_combinations' %}";
-    var add_user_timetable = "{% url 'result:add_user_timetable' %}";
+    var get_empty_rooms_url = "{% url 'roomfinder:get_empty_rooms' %}";
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/result/multiRangeSlider.js' %}"></script>
+<script src="{% static 'js/roomfinder/getEmptyRooms.js' %}"></script>

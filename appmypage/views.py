@@ -25,7 +25,7 @@ class Mypage(View):
     template_name = 'myTimeTablePage.html'
 
     def get(self, request):
-        user_id = request.session.get('user_id')
+        user_id = request.session.get('_auth_user_id')
 
         read_query = """
             SELECT

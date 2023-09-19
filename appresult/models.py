@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import UniqueConstraint
 from appsearch.models import LectureItem
-from appaccount.models import User
+from django.contrib.auth.models import User
 # Create your models here.
 
 class MyTimeTable(models.Model):

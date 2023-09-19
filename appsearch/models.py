@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import UniqueConstraint
-from appaccount.models import User
+from django.contrib.auth.models import User
 # Create your models here.
 
 class LectureGroup(models.Model):

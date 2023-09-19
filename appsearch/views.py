@@ -45,7 +45,7 @@ class Search(View):
         search_value_list = ["lecture_name", "lecture_code", "lecture_professor"]
         search_zip_list = zip(search_value_list, search_label_list)
 
-        user_id = request.session.get('user_id')
+        user_id = request.session.get('_auth_user_id')
         userbasket_group_list = get_userbasket_group(user_id)
 
         context = {
@@ -200,13 +200,13 @@ def get_userbasket_group(user_id, lecture_code=None):
     FROM  
         {appName}_userbasket
     INNER JOIN 
-        appaccount_user on {appName}_userbasket.user_id_id = appaccount_user.user_id 
+        auth_user on {appName}_userbasket.user_id_id = auth_user.id 
     INNER JOIN 
         {appName}_lectureItem on {appName}_userbasket.lecture_id_id = {appName}_lectureItem.lecture_id
     INNER JOIN 
         {appName}_lectureGroup on {appName}_lectureItem.lecture_code_id = {appName}_lectureGroup.lecture_code
     WHERE
-        user_id = %s
+        auth_user.id = %s
     """
 
     read_params = [user_id]
@@ -239,13 +239,13 @@ def get_userbasket_item(user_id, lecture_code, lecture_number=None):
     FROM  
         {appName}_userbasket
     INNER JOIN 
-        appaccount_user on {appName}_userbasket.user_id_id = appaccount_user.user_id 
+        auth_user on {appName}_userbasket.user_id_id = auth_user.id 
     INNER JOIN 
         {appName}_lectureItem on {appName}_userbasket.lecture_id_id = {appName}_lectureItem.lecture_id
     INNER JOIN 
         {appName}_lectureItemSchedule ON {appName}_lectureItem.lecture_id = {appName}_lectureItemSchedule.lecture_id_id
     WHERE 
-        user_id = %s AND lecture_code_id = %s
+        auth_user.id = %s AND lecture_code_id = %s
     """
 
     read_params = [user_id, lecture_code]
@@ -262,7 +262,7 @@ def get_userbasket_item(user_id, lecture_code, lecture_number=None):
 
 @csrf_exempt
 def get_userbasket_items(request):
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('_auth_user_id')
     lecture_code = request.POST.get('lecture_code')
 
     basket_items = get_userbasket_item(user_id, lecture_code)
@@ -271,7 +271,7 @@ def get_userbasket_items(request):
 
 @csrf_exempt
 def add_userbasket(request):
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('_auth_user_id')
     lecture_code = request.POST.get('lecture_code')
     lecture_number = request.POST.get('lecture_number')
     lecture_campus = request.POST.get('campus')
@@ -299,16 +299,10 @@ def add_userbasket(request):
     response_data = {'message': 'Success'}
     return JsonResponse(response_data)
 
-    # if lecture_number:
-    #     basket_item = get_userbasket_item(user_id, lecture_code, lecture_number)
-    #     return JsonResponse(basket_item, safe=False)
-    # else:
-    #     basket_group = get_userbasket_group(user_id, lecture_code)
-    #     return JsonResponse(basket_group, safe=False)
 
 @csrf_exempt
 def delete_userbasket(request):
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('_auth_user_id')
     lecture_code = request.POST.get('lecture_code')
     lecture_number = request.POST.get('lecture_number')
 

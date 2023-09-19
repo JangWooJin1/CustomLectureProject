@@ -51,12 +51,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'appaccount.apps.AppaccountConfig',
     'appsearch.apps.AppsearchConfig',
     'appresult.apps.AppresultConfig',
     'appmypage.apps.AppmypageConfig',
     'approomfinder.apps.ApproomfinderConfig',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'CustomLecture.urls'
@@ -104,6 +111,24 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -148,4 +173,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 로그인 성공후 이동하는 URL
-LOGIN_REDIRECT_URL = '/MainPage'
+LOGIN_REDIRECT_URL = '/search'
+
+# 세션 쿠키의 유효기간을 1시간으로 설정
+SESSION_COOKIE_AGE = 3600
